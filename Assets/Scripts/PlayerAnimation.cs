@@ -26,9 +26,9 @@ public class PlayerAnimation : MonoBehaviour
 
     public void PlayerLanding()
     {
+        animator.SetTrigger("Land");
         animator.SetBool("IsJumping", false);
         animator.SetBool("IsFalling", false);
-        animator.SetTrigger("Land");
     }
 
     public void JumpStart()

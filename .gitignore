@@ -70,3 +70,5 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+/Assets/Resources/Sound/SFX/8-Bit Sfx
+/Assets/Resources/Sound/SFX/Fantasy Sfx
