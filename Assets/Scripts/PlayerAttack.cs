@@ -1,5 +1,4 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
@@ -7,7 +6,7 @@ public class PlayerAttack : MonoBehaviour
     private PlayerAnimation playerAnimation;
     private Animator animator;
 
-    private bool isAttacking = false;
+    public bool isAttacking = false;
 
     [Header("애니메이션 상태 이름")]
     public string attackStateName = "Attack";
@@ -29,14 +28,13 @@ public class PlayerAttack : MonoBehaviour
         {
             playerAnimation.TriggerAttack();
         }
-
         StartCoroutine(AttackCooldownByAnimation());
     }
 
     private IEnumerator AttackCooldownByAnimation()
     {
         isAttacking = true;
-
+        SoundManager.Instance.PlaySFX(SFXType.EnemyDamagedSFX);
         yield return null; // 다음 프레임까지의 안정성을 위해 추가
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 

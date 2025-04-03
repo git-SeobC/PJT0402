@@ -11,7 +11,6 @@ public class PlayerAnimation : MonoBehaviour
 
     public void TriggerAttack()
     {
-        Debug.Log("Attack Trigger On");
         animator.SetTrigger("Attack");
     }
     public void SetWalking(bool isWalking)
@@ -44,7 +43,7 @@ public class PlayerAnimation : MonoBehaviour
 
     public void SetFalling(bool isFalling)
     {
-        animator.SetBool("IsJumpint", false);
+        animator.SetBool("IsJumping", false);
         animator.SetBool("IsFalling", isFalling);
     }
 }

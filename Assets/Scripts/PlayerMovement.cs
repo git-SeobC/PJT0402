@@ -24,9 +24,8 @@ public class PlayerMovement : MonoBehaviour
 
     public void HandleMovement()
     {
-        float moveInput = Input.GetAxis("Horizontal");
+        float moveInput = Input.GetAxisRaw("Horizontal");
         rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
-        // velocity = 
 
         if (playerAnimation != null)
         {
@@ -45,9 +44,9 @@ public class PlayerMovement : MonoBehaviour
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
             //playerAnimation.SetJumping(true);
             playerAnimation.JumpStart();
-            Debug.Log("점프");
+            SoundManager.Instance.PlaySFX(SFXType.PlayerJumpSFX);
         }
-        else if (!isGrounded && rb.linearVelocity.y < -0.1f) // 낙하 상태
+        else if (!isGrounded && rb.linearVelocity.y < 0) // 낙하 상태
         {
             isFalling = true;
             playerAnimation.SetFalling(true);
@@ -60,6 +59,10 @@ public class PlayerMovement : MonoBehaviour
 
         //bool isAirborne = !isGrounded;
         //playerAnimation.SetJumping(isAirborne);
+    }
 
+    public void StepSoundEvent()
+    {
+        SoundManager.Instance.PlaySFX(SFXType.PlayerStepSFX);
     }
 }
