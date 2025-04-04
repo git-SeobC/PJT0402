@@ -43,10 +43,9 @@ public class PlayerController : MonoBehaviour
 
         if (isPaused) return;
 
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") && !gameObject.GetComponent<PlayerMovement>().isFalling)
         {
-            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-            Debug.Log("buttondown fire1");
+            if (gameObject.GetComponent<PlayerMovement>().isGrounded) rb.linearVelocity = new Vector2(0, 0);
             attack.PerformAttack();
         }
         else if (attack.isAttacking == false)

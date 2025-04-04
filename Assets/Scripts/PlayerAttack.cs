@@ -41,6 +41,7 @@ public class PlayerAttack : MonoBehaviour
 
         if (playerAnimation != null)
         {
+            playerAnimation.SetAttack(true);
             playerAnimation.TriggerAttack();
         }
         StartCoroutine(AttackCooldownByAnimation());
@@ -53,7 +54,7 @@ public class PlayerAttack : MonoBehaviour
         //StartCoroutine(Shake(shakeDuration, shakeMagnitude));
         GenerateCameraImpulse();
         SoundManager.Instance.PlaySFX(SFXType.EnemyDamagedSFX);
-        ParticleManager.Instance.ParticlePlay(ParticleType.PlayerAttack, transform.position + new Vector3(1, 1, 0), new Vector3(5, 5, 5));
+        //ParticleManager.Instance.ParticlePlay(ParticleType.PlayerAttack, transform.position + new Vector3(1, 1, 0), new Vector3(5, 5, 5));
         yield return null; // 다음 프레임까지의 안정성을 위해 추가
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
@@ -68,8 +69,12 @@ public class PlayerAttack : MonoBehaviour
         }
 
         isAttacking = false;
+        playerAnimation.SetAttack(false);
     }
 
+    /// <summary>
+    /// 애니메이션에서 호출하는 메소드
+    /// </summary>
     public void AttackStart()
     {
         bool isFacingLeft = GetComponent<SpriteRenderer>().flipX;
@@ -89,6 +94,9 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 애니메이션에서 호출하는 메소드
+    /// </summary>
     public void AttackEnd()
     {
         bool isFacingLeft = GetComponent<SpriteRenderer>().flipX;

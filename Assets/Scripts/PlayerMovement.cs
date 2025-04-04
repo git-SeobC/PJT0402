@@ -6,8 +6,8 @@ public class PlayerMovement : MonoBehaviour
     public float jumpForce = 10.0f;
 
     public Rigidbody2D rb;
-    private bool isGrounded;
-    private bool isFalling;
+    public bool isGrounded;
+    public bool isFalling;
 
     [Header("Ground Check")]
     public Transform groundCheck;

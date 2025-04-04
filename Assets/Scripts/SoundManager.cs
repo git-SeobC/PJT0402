@@ -16,7 +16,8 @@ public enum SFXType
     PlayerJumpSFX,
     PlayerStepSFX,
     PickupItemSFX,
-    MenuOpenSFX
+    MenuOpenSFX,
+    LandingSFX
 }
 
 public class SoundManager : MonoBehaviour

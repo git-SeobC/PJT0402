@@ -13,6 +13,11 @@ public class PlayerAnimation : MonoBehaviour
     {
         animator.SetTrigger("Attack");
     }
+    public void SetAttack(bool pSet)
+    {
+        animator.SetBool("IsAttack", pSet);
+    }
+
     public void SetWalking(bool isWalking)
     {
         animator.SetBool("IsWalking", isWalking);
@@ -28,6 +33,7 @@ public class PlayerAnimation : MonoBehaviour
         animator.SetTrigger("Land");
         animator.SetBool("IsJumping", false);
         animator.SetBool("IsFalling", false);
+        SoundManager.Instance.PlaySFX(SFXType.LandingSFX);
     }
 
     public void JumpStart()
