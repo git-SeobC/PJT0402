@@ -32,10 +32,18 @@ public class PlayerMovement : MonoBehaviour
             playerAnimation.SetWalking(moveInput != 0);
         }
 
-        if (moveInput != 0)
+        //if (moveInput != 0)
+        //{
+        //Debug.Log("이동 입력 : " + moveInput);
+        //GetComponent<SpriteRenderer>().flipX = moveInput < 0;
+        //}
+        if (moveInput < 0 && transform.localScale.x > 0)
         {
-            //Debug.Log("이동 입력 : " + moveInput);
-            GetComponent<SpriteRenderer>().flipX = moveInput < 0;
+            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        }
+        else if (moveInput > 0 && transform.localScale.x < 0)
+        {
+            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
         }
 
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);

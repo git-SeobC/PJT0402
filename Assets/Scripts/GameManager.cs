@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
         return coinCount;
     }
 
+
     public void ResetCoin()
     {
         coinCount = 0;
