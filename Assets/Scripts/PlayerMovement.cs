@@ -5,7 +5,7 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed = 5.0f;
     public float jumpForce = 10.0f;
 
-    private Rigidbody2D rb;
+    public Rigidbody2D rb;
     private bool isGrounded;
     private bool isFalling;
 

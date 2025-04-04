@@ -6,8 +6,12 @@ public class PlayerController : MonoBehaviour
     private PlayerAttack attack;
     private PlayerHurt hurt;
     private PlayerDie die;
+    private Rigidbody2D rb;
 
     private Vector3 StartPlayerPos;
+
+    private bool isPaused = false;
+    public GameObject pauseMenuUI;
 
     private void Awake()
     {
@@ -15,6 +19,7 @@ public class PlayerController : MonoBehaviour
         attack = GetComponent<PlayerAttack>();
         hurt = GetComponent<PlayerHurt>();
         die = GetComponent<PlayerDie>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     void Start()
@@ -24,8 +29,23 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (isPaused)
+            {
+                ReGame();
+            }
+            else
+            {
+                Pause();
+            }
+        }
+
+        if (isPaused) return;
+
         if (Input.GetButtonDown("Fire1"))
         {
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
             Debug.Log("buttondown fire1");
             attack.PerformAttack();
         }
@@ -34,6 +54,33 @@ public class PlayerController : MonoBehaviour
             movement.HandleMovement();
         }
     }
+
+    public void Pause()
+    {
+        pauseMenuUI.SetActive(true);
+        Time.timeScale = 0f;
+        isPaused = true;
+        SoundManager.Instance.PlaySFX(SFXType.MenuOpenSFX);
+    }
+
+    public void ReGame()
+    {
+        pauseMenuUI.SetActive(false);
+        Time.timeScale = 1.0f;
+        isPaused = false;
+        SoundManager.Instance.PlaySFX(SFXType.MenuOpenSFX);
+    }
+
+    public void ResumeButtonClick()
+    {
+        ReGame();
+    }
+
+    public void QuitButtonClick()
+    {
+        Application.Quit();
+    }
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

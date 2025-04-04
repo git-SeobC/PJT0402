@@ -2,7 +2,6 @@ using UnityEngine;
 using System;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
-using NUnit.Framework.Internal.Commands;
 using System.Collections;
 
 public enum BGMType
@@ -16,7 +15,8 @@ public enum SFXType
     PlayerHitSFX,
     PlayerJumpSFX,
     PlayerStepSFX,
-    PickupItemSFX
+    PickupItemSFX,
+    MenuOpenSFX
 }
 
 public class SoundManager : MonoBehaviour

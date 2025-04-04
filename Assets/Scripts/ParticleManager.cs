@@ -24,11 +24,11 @@ public class ParticleManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(this);
         }
         else
         {
-            Destroy(gameObject);
+            Destroy(this);
         }
         particlePrefabDic.Add(ParticleType.PlayerAttack, playerAttackEffectRefab);
         particlePrefabDic.Add(ParticleType.PlayerDamage, playerDamageEffectPrefab);
