@@ -16,6 +16,8 @@ public class PlayerMovement : MonoBehaviour
 
     private PlayerAnimation playerAnimation;
 
+    public GameObject AttackObj;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -32,19 +34,20 @@ public class PlayerMovement : MonoBehaviour
             playerAnimation.SetWalking(moveInput != 0);
         }
 
-        //if (moveInput != 0)
+        if (moveInput != 0)
+        {
+            GetComponent<SpriteRenderer>().flipX = moveInput < 0;
+        }
+
+        // 스케일을 통한 좌우 반전
+        //if (moveInput < 0 && transform.localScale.x > 0)
         //{
-        //Debug.Log("이동 입력 : " + moveInput);
-        //GetComponent<SpriteRenderer>().flipX = moveInput < 0;
+        //    transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
         //}
-        if (moveInput < 0 && transform.localScale.x > 0)
-        {
-            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-        }
-        else if (moveInput > 0 && transform.localScale.x < 0)
-        {
-            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-        }
+        //else if (moveInput > 0 && transform.localScale.x < 0)
+        //{
+        //    transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        //}
 
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
         if (Input.GetButtonDown("Jump") && isGrounded) // 땅에 붙어있는지 확인
@@ -72,5 +75,10 @@ public class PlayerMovement : MonoBehaviour
     public void StepSoundEvent()
     {
         SoundManager.Instance.PlaySFX(SFXType.PlayerStepSFX);
+    }
+
+    public void AttackObjFilpEvent()
+    {
+
     }
 }
