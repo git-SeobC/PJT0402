@@ -70,6 +70,7 @@ public class PlayerAttack : MonoBehaviour
 
         isAttacking = false;
         playerAnimation.SetAttack(false);
+        AttackEnd();
     }
 
     /// <summary>
@@ -99,21 +100,8 @@ public class PlayerAttack : MonoBehaviour
     /// </summary>
     public void AttackEnd()
     {
-        bool isFacingLeft = GetComponent<SpriteRenderer>().flipX;
-        if (isFacingLeft)
-        {
-            if (attackObjList.Count > 0)
-            {
-                attackObjList[0].SetActive(false);
-            }
-        }
-        else
-        {
-            if (attackObjList.Count > 0)
-            {
-                attackObjList[1].SetActive(false);
-            }
-        }
+        attackObjList[0].SetActive(false);
+        attackObjList[1].SetActive(false);
     }
 
     private IEnumerator Shake(float duration, float magnitude)
@@ -126,7 +114,7 @@ public class PlayerAttack : MonoBehaviour
         var cinema = Camera.main.GetComponent<CinemachineBrain>();
 
         cinema.enabled = false;
-        
+
         float elapsed = 0.0f;
 
         while (elapsed < duration)
