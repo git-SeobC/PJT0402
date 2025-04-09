@@ -1,12 +1,22 @@
 using System.Collections;
 using UnityEngine;
 
+public enum EnemyType
+{
+    None, FlyingMoster
+}
+
 public class EnemyManager : MonoBehaviour
 {
     private Color orginalColor;
     private Renderer objectRenderer;
     public float colorChangeDuration = 0.5f;
     public float enemyHp = 10.0f;
+    public float speed = 2.0f;
+    public float maxDistance = 3.0f;
+    private Vector3 startPos;
+    private int direction = 1;
+    public EnemyType enemyType = EnemyType.None;
 
 
     void Start()
@@ -24,6 +34,8 @@ public class EnemyManager : MonoBehaviour
             else Destroy(gameObject);
         }
     }
+
+
 
     private IEnumerator ChangeColorTemporatily()
     {
