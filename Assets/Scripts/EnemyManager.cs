@@ -15,7 +15,7 @@ public class EnemyManager : MonoBehaviour
     public float speed = 2.0f;
     public float maxDistance = 3.0f;
     private Vector3 startPos;
-    private int direction = 1;
+    //private int direction = 1;
     public EnemyType enemyType = EnemyType.None;
 
 
@@ -29,6 +29,18 @@ public class EnemyManager : MonoBehaviour
     {
         if (collision.CompareTag("PlayerAttack"))
         {
+            Vector3 spawnPosition;
+            if (collision.name == "AttackObjRight")
+            {
+                spawnPosition = collision.transform.position + transform.right * 0.5f;
+                ParticleManager.Instance.ParticlePlay(ParticleType.PlayerAttack, spawnPosition, new Vector3(-4, 4, 4));
+            }
+            else
+            {
+                spawnPosition = collision.transform.position - transform.right * 0.5f;
+                ParticleManager.Instance.ParticlePlay(ParticleType.PlayerAttack, spawnPosition, new Vector3(4, 4, 4));
+            }
+
             enemyHp -= 5.0f;
             if (enemyHp > 0) StartCoroutine(ChangeColorTemporatily());
             else Destroy(gameObject);

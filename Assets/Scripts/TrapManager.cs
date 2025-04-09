@@ -4,6 +4,7 @@ public enum TrapType
 {
     HorizontalMoveGround,
     VerticalMoveGround,
+    SpikeTrap
 }
 
 public class TrapManager : MonoBehaviour
@@ -45,17 +46,11 @@ public class TrapManager : MonoBehaviour
             }
             transform.position += new Vector3(0, speed * direction * Time.deltaTime, 0);
         }
+        else if (currentType == TrapType.SpikeTrap)
+        {
+
+        }
     }
-
-    //private void OnCollisionEnter2D(Collision2D collision)
-    //{
-        
-    //}
-
-    //private void OnCollisionExit2D(Collision2D collision)
-    //{
-        
-    //}
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -73,5 +68,13 @@ public class TrapManager : MonoBehaviour
         {
             collision.transform.SetParent(null);
         }
+    }
+
+    /// <summary>
+    /// 애니메이션 이벤트용 메소드
+    /// </summary>
+    public void SpikeTrapSFXOn()
+    {
+        SoundManager.Instance.PlaySFX(SFXType.SpikeTrapSFX);
     }
 }

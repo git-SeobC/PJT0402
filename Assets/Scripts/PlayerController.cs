@@ -1,8 +1,11 @@
 using System.Collections;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController Instance { get; private set; }
+
     private PlayerMovement movement;
     private PlayerAttack attack;
     private PlayerHurt hurt;
@@ -14,6 +17,9 @@ public class PlayerController : MonoBehaviour
     private bool isPaused = false;
     public GameObject pauseMenuUI;
 
+    [Header("카메라 쉐이크 설정")]
+    public CinemachineImpulseSource impulseSource;
+
     private SpriteRenderer spriteRenderer;
     private Animator animator;
     private bool isInvincible = false;
@@ -24,6 +30,15 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
         movement = GetComponent<PlayerMovement>();
         attack = GetComponent<PlayerAttack>();
         hurt = GetComponent<PlayerHurt>();
@@ -52,7 +67,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (isPaused) return;
+        if (isPaused || isKnockback) return;
 
         if (Input.GetButtonDown("Fire1") && !gameObject.GetComponent<PlayerMovement>().isFalling)
         {
@@ -86,6 +101,19 @@ public class PlayerController : MonoBehaviour
         ReGame();
     }
 
+    public void GenerateCameraImpulse()
+    {
+        if (impulseSource != null)
+        {
+            Debug.Log("카메라 임펄스 발생");
+            impulseSource.GenerateImpulse();
+        }
+        else
+        {
+            Debug.Log("NO Impulse");
+        }
+    }
+
     public void QuitButtonClick()
     {
         Application.Quit();
@@ -107,15 +135,13 @@ public class PlayerController : MonoBehaviour
         else if (collision.CompareTag("Trap"))
         {
             PlayerAttack playerAttack = GetComponent<PlayerAttack>();
-            float shakeDuration = 0.1f;
-            float shakeMagnitude = 0.3f;
-            //StartCoroutine(playerAttack.Shake(shakeDuration, shakeMagitude))
-            // 카메라 CinemachineImpulseSource로 임펄스 쉐이크 진행하도록 변경해야함
+            GenerateCameraImpulse();
 
             if (!isInvincible)
             {
                 SoundManager.Instance.PlaySFX(SFXType.PlayerHitSFX);
                 StartCoroutine(Invincibility());
+                animator.SetBool("IsFalling", false);
                 animator.SetTrigger("Hit");
                 Vector2 knockbackDirection = spriteRenderer.flipX ? Vector2.right : Vector2.left;
                 rb.linearVelocity = Vector2.zero;
@@ -128,6 +154,8 @@ public class PlayerController : MonoBehaviour
     IEnumerator Invincibility()
     {
         isInvincible = true;
+        Time.timeScale = 0.8f; // 맞았을 경우 살짝 시간이 느리게 가도록하는 디테일
+        // 플레이어 속도를 살짝 높여 위험에서 빠르게 벗어날 수 있도록 하는 것도 좋음
 
         float elapsedTime = 0f;
         float blinkInterval = 0.2f;
@@ -143,6 +171,7 @@ public class PlayerController : MonoBehaviour
             elapsedTime += blinkInterval * 2;
         }
         spriteRenderer.color = originalColor;
+        Time.timeScale = 1.0f;
         isInvincible = false;
     }
 

@@ -17,8 +17,6 @@ public class PlayerAttack : MonoBehaviour
     public float shakeMagnitude = 0.1f;
     private Vector3 originalPos;
 
-    [Header("카메라 쉐이크 설정")]
-    public CinemachineImpulseSource impulseSource;
 
     void Start()
     {
@@ -52,7 +50,7 @@ public class PlayerAttack : MonoBehaviour
         isAttacking = true;
         originalPos = Camera.main.transform.localPosition;
         //StartCoroutine(Shake(shakeDuration, shakeMagnitude));
-        GenerateCameraImpulse();
+        PlayerController.Instance.GenerateCameraImpulse();
         SoundManager.Instance.PlaySFX(SFXType.EnemyDamagedSFX);
         //ParticleManager.Instance.ParticlePlay(ParticleType.PlayerAttack, transform.position + new Vector3(1, 1, 0), new Vector3(5, 5, 5));
         yield return null; // 다음 프레임까지의 안정성을 위해 추가
@@ -134,17 +132,6 @@ public class PlayerAttack : MonoBehaviour
         cinema.enabled = true;
     }
 
-    private void GenerateCameraImpulse()
-    {
-        if (impulseSource != null)
-        {
-            Debug.Log("카메라 임펄스 발생");
-            impulseSource.GenerateImpulse();
-        }
-        else
-        {
-            Debug.Log("NO Impulse");
-        }
-    }
+
 
 }
