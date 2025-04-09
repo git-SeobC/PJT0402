@@ -140,6 +140,7 @@ public class PlayerController : MonoBehaviour
             if (!isInvincible)
             {
                 SoundManager.Instance.PlaySFX(SFXType.PlayerHitSFX);
+                ParticleManager.Instance.ParticlePlay(ParticleType.PlayerDamage, transform.position, new Vector3(4, 4, 4));
                 StartCoroutine(Invincibility());
                 animator.SetBool("IsFalling", false);
                 animator.SetTrigger("Hit");

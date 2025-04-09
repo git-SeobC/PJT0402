@@ -713,7 +713,7 @@ MonoBehaviour:
     DissipationMode: 2
     DissipationDistance: 100
     PropagationSpeed: 343
-  DefaultVelocity: {x: 0, y: -0.1, z: 0}
+  DefaultVelocity: {x: 0.1, y: -0.1, z: 5}
 --- !u!114 &316701966
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6931,7 +6931,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorChangeDuration: 0.5
-  enemyHp: 10
+  enemyHp: 50
   speed: 2
   maxDistance: 3
   enemyType: 0
@@ -7019,6 +7019,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 619394802}
   - {fileID: 519420032}
+  - {fileID: 316701963}
   - {fileID: 343405824}
   - {fileID: 989021016}
   - {fileID: 1683932112}
@@ -7026,7 +7027,6 @@ SceneRoots:
   - {fileID: 515805747}
   - {fileID: 1271034290}
   - {fileID: 129738126}
-  - {fileID: 316701963}
   - {fileID: 1620724074}
   - {fileID: 1972235532}
   - {fileID: 1831078249}
