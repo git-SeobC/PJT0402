@@ -4,10 +4,10 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - ItemApple
   - DeathZone
   - PlayerAttack
   - Trap
+  - Life
   layers:
   - Default
   - TransparentFX

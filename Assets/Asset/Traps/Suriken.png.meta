@@ -55,7 +55,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -123,7 +123,7 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 33
+        width: 32
         height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -131,10 +131,10 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 9b0c4d6a1d1187f90800000000000000
-      internalID: -6955790032328933191
+      spriteID: 4eaf86b64add4bf4eaea6b7b0f045123
+      internalID: 46182070
       vertices: []
       indices: 
       edges: []
@@ -143,9 +143,9 @@ TextureImporter:
       name: Suriken_1
       rect:
         serializedVersion: 2
-        x: 31
+        x: 32
         y: 0
-        width: 34
+        width: 32
         height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -153,10 +153,10 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 2aff81f39b9200e50800000000000000
-      internalID: 6773459715169517474
+      spriteID: ba8918bbb67197f4d921c62f5e32d9d8
+      internalID: -1137174096
       vertices: []
       indices: 
       edges: []
@@ -175,10 +175,10 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: ae3b01cb34f095d50800000000000000
-      internalID: 6726424302046983146
+      spriteID: d80bbd05c64159d43bc17d3fc1b300a4
+      internalID: -5306474
       vertices: []
       indices: 
       edges: []
@@ -197,10 +197,10 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 065ab34e42b9dbe00800000000000000
-      internalID: 1062175669879547232
+      spriteID: 135e9d9bc746a9e4fbdd3f2d19e210e1
+      internalID: -1790594149
       vertices: []
       indices: 
       edges: []
@@ -209,9 +209,9 @@ TextureImporter:
       name: Suriken_4
       rect:
         serializedVersion: 2
-        x: 127
+        x: 128
         y: 0
-        width: 34
+        width: 32
         height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -219,10 +219,10 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: e3bfc6e3d8d3c0750800000000000000
-      internalID: 6272456057867270974
+      spriteID: e4fc599ae62c21648bae6c7a78b4f71d
+      internalID: 820099463
       vertices: []
       indices: 
       edges: []
@@ -231,9 +231,9 @@ TextureImporter:
       name: Suriken_5
       rect:
         serializedVersion: 2
-        x: 159
+        x: 160
         y: 0
-        width: 34
+        width: 32
         height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -241,10 +241,10 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 9594903cf4d518940800000000000000
-      internalID: 5296617233920379225
+      spriteID: 58878d85b38f5c4438dbd9de46699511
+      internalID: -648253927
       vertices: []
       indices: 
       edges: []
@@ -253,9 +253,9 @@ TextureImporter:
       name: Suriken_6
       rect:
         serializedVersion: 2
-        x: 191
+        x: 192
         y: 0
-        width: 65
+        width: 32
         height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -263,10 +263,32 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 92309adeb4b98c780800000000000000
-      internalID: -8662503132835019991
+      spriteID: 9885a4a440dfbd945aa62602170bf6bb
+      internalID: 647350729
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Suriken_7
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7e310b6c72230e64dbd1cbe2a89e7f74
+      internalID: 287019671
       vertices: []
       indices: 
       edges: []
@@ -275,7 +297,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: bb4d62c18291dfa4bb490590b33bf947
     internalID: 0
     vertices: []
     indices: 
@@ -284,7 +306,15 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Suriken_0: 46182070
+      Suriken_1: -1137174096
+      Suriken_2: -5306474
+      Suriken_3: -1790594149
+      Suriken_4: 820099463
+      Suriken_5: -648253927
+      Suriken_6: 647350729
+      Suriken_7: 287019671
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

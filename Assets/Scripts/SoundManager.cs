@@ -18,7 +18,9 @@ public enum SFXType
     PickupItemSFX,
     MenuOpenSFX,
     LandingSFX,
-    SpikeTrapSFX
+    SpikeTrapSFX,
+    BladeDieSFX,
+    DefaultDieSFX
 }
 
 public class SoundManager : MonoBehaviour

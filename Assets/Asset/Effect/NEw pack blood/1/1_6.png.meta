@@ -43,7 +43,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -109,12 +109,12 @@ TextureImporter:
       name: 1_6_0
       rect:
         serializedVersion: 2
-        x: 33
-        y: 40
-        width: 19
-        height: 13
+        x: 16
+        y: 31
+        width: 64
+        height: 50
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -127,55 +127,11 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
-    - serializedVersion: 2
-      name: 1_6_1
-      rect:
-        serializedVersion: 2
-        x: 35
-        y: 50
-        width: 27
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: e3825b697f8f8a450800000000000000
-      internalID: 6100399437542402110
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: 1_6_2
-      rect:
-        serializedVersion: 2
-        x: 52
-        y: 39
-        width: 7
-        height: 6
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 6326523af908b59f0800000000000000
-      internalID: -478647512259534282
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 39607fe9ac8a98947a296f81daf543c5
     internalID: 0
     vertices: []
     indices: 
@@ -184,7 +140,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      1_6_0: 5768811150274278660
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,13 +1,17 @@
+using NUnit.Framework.Internal.Commands;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    
     public static GameManager Instance;
 
-    private int coinCount = 0;
+    private PlayerController playerController;
+    public GameObject player;
+    public GameObject[] Life = new GameObject[3];
 
-    public Text coinText;
+
 
     private void Awake()
     {
@@ -19,25 +23,21 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
     }
 
-    public void AddCoin(int amount)
+    private void Start()
     {
-        coinCount += amount;
-        coinText.text = coinCount.ToString();
-        SoundManager.Instance.PlaySFX(SFXType.PickupItemSFX);
-        PlayerPrefs.SetInt("Coin", coinCount);
+        playerController = player.GetComponent<PlayerController>();
+
+        SetLifeUI();
     }
 
-    public int GetCoinCount()
+    public void SetLifeUI()
     {
-        return coinCount;
-    }
-
-
-    public void ResetCoin()
-    {
-        coinCount = 0;
-        PlayerPrefs.SetInt("Coin", coinCount);
+        for (int i = 0; i < Life.Length; i++)
+        {
+            Life[i].SetActive(i < playerController.playerHP);
+        }
     }
 }

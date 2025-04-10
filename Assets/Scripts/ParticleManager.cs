@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum ParticleType
 {
     PlayerAttack,
     PlayerDamage,
+    PlayerDie,
 }
 
 public class ParticleManager : MonoBehaviour
@@ -15,8 +17,10 @@ public class ParticleManager : MonoBehaviour
     private Dictionary<ParticleType, GameObject> particlePrefabDic = new Dictionary<ParticleType, GameObject>();
     private Dictionary<ParticleType, Queue<GameObject>> particlePools = new Dictionary<ParticleType, Queue<GameObject>>();
 
-    public GameObject playerAttackEffectRefab;
+    public GameObject playerAttackEffectPrefab;
     public GameObject playerDamageEffectPrefab;
+    public GameObject playerDieEffectPrefab;
+
     public int poolSize = 10;
 
     private void Awake()
@@ -24,13 +28,13 @@ public class ParticleManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(this);
+            //DontDestroyOnLoad(this);
         }
         else
         {
             Destroy(this);
         }
-        particlePrefabDic.Add(ParticleType.PlayerAttack, playerAttackEffectRefab);
+        particlePrefabDic.Add(ParticleType.PlayerAttack, playerAttackEffectPrefab);
         particlePrefabDic.Add(ParticleType.PlayerDamage, playerDamageEffectPrefab);
 
         foreach (var type in particlePrefabDic.Keys)
@@ -63,6 +67,24 @@ public class ParticleManager : MonoBehaviour
                 {
                     animator.Play(0);
                     StartCoroutine(AnimationEndCoroutine(type, particleObj, animator));
+                }
+            }
+        }
+        else
+        {
+            if (type == ParticleType.PlayerDie)
+            {
+                GameObject particleObj = Instantiate(playerDieEffectPrefab);
+                particleObj.transform.position = position;
+                particleObj.transform.localScale = scale;
+                particleObj.SetActive(true);
+
+                Animator animator = particleObj.GetComponent<Animator>();
+                if (animator != null)
+                {
+                    animator.Play(0);
+                    AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+                    Destroy(particleObj, stateInfo.length);
                 }
             }
         }

@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -103,12 +103,12 @@ TextureImporter:
       name: 1_16_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 100
-        height: 100
+        x: 16
+        y: 31
+        width: 64
+        height: 50
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 518928a7e2a49954f9065690733f82b3
     internalID: 0
     vertices: []
     indices: 
@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      1_16_0: -1835945327713712400
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

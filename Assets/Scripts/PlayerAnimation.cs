@@ -52,4 +52,9 @@ public class PlayerAnimation : MonoBehaviour
         animator.SetBool("IsJumping", false);
         animator.SetBool("IsFalling", isFalling);
     }
+
+    //public void PlayerDie()
+    //{
+    //    animator.Play("PlayerDie");
+    //}
 }

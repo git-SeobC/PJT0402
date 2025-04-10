@@ -1,4 +1,6 @@
+using NUnit.Framework.Internal.Commands;
 using System.Collections;
+using Unity.AppUI.Core;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -27,6 +29,9 @@ public class PlayerController : MonoBehaviour
     public float knockbackForce = 5.0f;
     private bool isKnockback = false;
     public float knockbackDuration = 0.2f;
+
+    public int playerHP = 3;
+    private int maxPlayerHP = 3;
 
     private void Awake()
     {
@@ -105,7 +110,6 @@ public class PlayerController : MonoBehaviour
     {
         if (impulseSource != null)
         {
-            Debug.Log("카메라 임펄스 발생");
             impulseSource.GenerateImpulse();
         }
         else
@@ -119,18 +123,28 @@ public class PlayerController : MonoBehaviour
         Application.Quit();
     }
 
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("ItemApple"))
+        if (collision.CompareTag("Life"))
         {
-            GameManager.Instance.AddCoin(1);
-            Destroy(collision.gameObject);
+            if (playerHP < maxPlayerHP)
+            {
+                playerHP++;
+                GameManager.Instance.SetLifeUI();
+            }
+            SoundManager.Instance.PlaySFX(SFXType.PickupItemSFX);
+            collision.gameObject.SetActive(false);
         }
         else if (collision.CompareTag("DeathZone"))
         {
-            SoundManager.Instance.PlaySFX(SFXType.PlayerHitSFX);
-            transform.position = StartPlayerPos;
+            playerHP = 0;
+            GameManager.Instance.SetLifeUI();
+            if (playerHP <= 0)
+            {
+                die.Die(collision);
+            }
+            //SoundManager.Instance.PlaySFX(SFXType.PlayerHitSFX);
+            //transform.position = StartPlayerPos;
         }
         else if (collision.CompareTag("Trap"))
         {
@@ -139,19 +153,32 @@ public class PlayerController : MonoBehaviour
 
             if (!isInvincible)
             {
-                SoundManager.Instance.PlaySFX(SFXType.PlayerHitSFX);
-                ParticleManager.Instance.ParticlePlay(ParticleType.PlayerDamage, transform.position, new Vector3(4, 4, 4));
-                StartCoroutine(Invincibility());
-                animator.SetBool("IsFalling", false);
-                animator.SetTrigger("Hit");
-                Vector2 knockbackDirection = spriteRenderer.flipX ? Vector2.right : Vector2.left;
-                rb.linearVelocity = Vector2.zero;
-                rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
-                StartCoroutine(KnockbackCoroutine());
+                playerHP--;
+                GameManager.Instance.SetLifeUI();
+                if (playerHP <= 0)
+                {
+                    die.Die(collision);
+                }
+                else
+                {
+                    SoundManager.Instance.PlaySFX(SFXType.PlayerHitSFX);
+                    ParticleManager.Instance.ParticlePlay(ParticleType.PlayerDamage, transform.position, new Vector3(4, 4, 4));
+                    StartCoroutine(Invincibility());
+                    animator.SetBool("IsFalling", false);
+                    animator.SetTrigger("Hit");
+                    Vector2 knockbackDirection = spriteRenderer.flipX ? Vector2.right : Vector2.left;
+                    rb.linearVelocity = Vector2.zero;
+                    rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
+                    StartCoroutine(KnockbackCoroutine());
+                }
             }
         }
     }
 
+    /// <summary>
+    /// 피격시 무적 상태
+    /// </summary>
+    /// <returns></returns>
     IEnumerator Invincibility()
     {
         isInvincible = true;

@@ -4,7 +4,8 @@ public enum TrapType
 {
     HorizontalMoveGround,
     VerticalMoveGround,
-    SpikeTrap
+    SpikeTrap,
+    HorizontalMoveTrap
 }
 
 public class TrapManager : MonoBehaviour
@@ -22,7 +23,7 @@ public class TrapManager : MonoBehaviour
 
     void Update()
     {
-        if (currentType == TrapType.HorizontalMoveGround)
+        if (currentType == TrapType.HorizontalMoveGround || currentType == TrapType.HorizontalMoveTrap)
         {
             if (transform.position.x > startPos.x + maxDistance)
             {
@@ -54,8 +55,7 @@ public class TrapManager : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Trap Trigger Enter");
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("Player") && (currentType == TrapType.HorizontalMoveGround || currentType == TrapType.VerticalMoveGround))
         {
             collision.transform.SetParent(gameObject.transform);
         }
@@ -63,8 +63,7 @@ public class TrapManager : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        Debug.Log("Trap Trigger Exit");
-        if (collision.CompareTag("Player") && collision.transform.parent.gameObject.activeInHierarchy)
+        if (collision.CompareTag("Player") && (currentType == TrapType.HorizontalMoveGround || currentType == TrapType.VerticalMoveGround) && collision.transform.parent.gameObject.activeInHierarchy)
         {
             collision.transform.SetParent(null);
         }
