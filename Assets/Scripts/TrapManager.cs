@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public enum TrapType
@@ -5,7 +6,8 @@ public enum TrapType
     HorizontalMoveGround,
     VerticalMoveGround,
     SpikeTrap,
-    HorizontalMoveTrap
+    HorizontalMoveTrap,
+    BrickTrap,
 }
 
 public class TrapManager : MonoBehaviour
@@ -23,6 +25,8 @@ public class TrapManager : MonoBehaviour
 
     void Update()
     {
+        if (currentType == TrapType.BrickTrap) return;
+
         if (currentType == TrapType.HorizontalMoveGround || currentType == TrapType.HorizontalMoveTrap)
         {
             if (transform.position.x > startPos.x + maxDistance)
@@ -67,6 +71,38 @@ public class TrapManager : MonoBehaviour
         {
             collision.transform.SetParent(null);
         }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.CompareTag("Player") && (currentType == TrapType.BrickTrap))
+        {
+            StartCoroutine(BrickBreakingEvent());
+        }
+    }
+
+    IEnumerator BrickBreakingEvent()
+    {
+        Vector3 originalPos = transform.position;
+        float shakeDuration = 0.5f;
+        float elapsed = 0f;
+        float shakeIntensity = 0.05f;
+
+        while (elapsed < shakeDuration)
+        {
+            elapsed += Time.deltaTime;
+            Vector3 shakeOffset = Random.insideUnitCircle * shakeIntensity;
+            transform.position = originalPos + shakeOffset;
+            yield return null;
+        }
+
+        GetComponent<Animator>().SetTrigger("Broken");
+
+        gameObject.GetComponent<Collider2D>().enabled = false;
+
+        yield return new WaitForSeconds(GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
+
+        gameObject.SetActive(false);
     }
 
     /// <summary>

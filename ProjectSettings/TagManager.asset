@@ -8,6 +8,7 @@ TagManager:
   - PlayerAttack
   - Trap
   - Life
+  - Orc
   layers:
   - Default
   - TransparentFX

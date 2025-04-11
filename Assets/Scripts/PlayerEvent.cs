@@ -6,6 +6,11 @@ public class PlayerEvent : MonoBehaviour
     public GameObject JumpKeyObj;
     public GameObject AttackKeyObj;
 
+    private void Start()
+    {
+        
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.name == "TutorialEvent1")
