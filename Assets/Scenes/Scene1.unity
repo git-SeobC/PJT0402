@@ -1021,7 +1021,7 @@ Transform:
   m_GameObject: {fileID: 316701960}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.27, y: -3.05, z: -10}
+  m_LocalPosition: {x: -6.27, y: -3, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4018,7 +4018,7 @@ Transform:
   m_GameObject: {fileID: 989021014}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.27, y: -3.05, z: 0}
+  m_LocalPosition: {x: -6.27, y: -3, z: 0}
   m_LocalScale: {x: 4, y: 4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -8489,7 +8489,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 500
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 1
@@ -8525,7 +8525,7 @@ MonoBehaviour:
   currentState: 0
   player: {fileID: 989021016}
   chaseRange: 5
-  attackRange: 1.5
+  attackRange: 1
   isAttacking: 0
   isGrounded: 0
   groundCheck: {fileID: 2076960163}
@@ -8536,6 +8536,9 @@ MonoBehaviour:
   patrolPoints:
   - {fileID: 623130406}
   - {fileID: 1707706747}
+  invincibilityDuration: 1
+  knockbackForce: 5
+  knockbackDuration: 0.2
 --- !u!1 &1779285871
 GameObject:
   m_ObjectHideFlags: 0
@@ -9373,6 +9376,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   patrolPoints: []
+  invincibilityDuration: 1
+  knockbackForce: 5
+  knockbackDuration: 0.2
 --- !u!114 &1972235535
 MonoBehaviour:
   m_ObjectHideFlags: 0
