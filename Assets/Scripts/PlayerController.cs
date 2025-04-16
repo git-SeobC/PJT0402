@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
     [Header("카메라 쉐이크 설정")]
     public CinemachineImpulseSource impulseSource;
 
+    private CapsuleCollider2D cld;
     private SpriteRenderer spriteRenderer;
     private Animator animator;
     private bool isInvincible = false;
@@ -51,6 +52,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        cld = GetComponent<CapsuleCollider2D>();
     }
 
     void Start()
@@ -184,7 +186,6 @@ public class PlayerController : MonoBehaviour
         isInvincible = true;
         Time.timeScale = 0.8f; // 맞았을 경우 살짝 시간이 느리게 가도록하는 디테일
         // 플레이어 속도를 살짝 높여 위험에서 빠르게 벗어날 수 있도록 하는 것도 좋음
-
         float elapsedTime = 0f;
         float blinkInterval = 0.2f;
 
@@ -201,6 +202,8 @@ public class PlayerController : MonoBehaviour
         spriteRenderer.color = originalColor;
         Time.timeScale = 1.0f;
         isInvincible = false;
+        cld.enabled = false;
+        cld.enabled = true;
     }
 
     IEnumerator KnockbackCoroutine()

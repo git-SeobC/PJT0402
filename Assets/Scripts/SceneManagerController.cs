@@ -41,11 +41,11 @@ public class SceneManagerController : MonoBehaviour
         isFading = true;
         panel.gameObject.SetActive(true);
 
-        FadeImage(0, 1, fadeDuration);
+        //FadeImage(0, 1, fadeDuration);
 
         SceneManager.LoadScene("LoadingScene");
 
-        yield return StartCoroutine(LoadLoadingAndNextScene());
+        //yield return StartCoroutine(LoadLoadingAndNextScene());
 
         yield return StartCoroutine(FadeImage(1, 0, fadeDuration));
 

@@ -11,6 +11,13 @@ public class GameManager : MonoBehaviour
     public GameObject player;
     public GameObject[] Life = new GameObject[3];
 
+    private const string COIN_KEY = "CoinCount";
+    private const string DAMAGE_KEY = "PlayerDamage";
+    private const string ATTACK_SPEED_KEY = "PlayerAttackSpeed";
+    private const string MOVE_SPEED_KEY = "PlayerMoveSpeed";
+    private const string HP_KEY = "PlayerHP";
+
+    public int coinCount = 0;
 
 
     private void Awake()
@@ -40,4 +47,33 @@ public class GameManager : MonoBehaviour
             Life[i].SetActive(i < playerController.playerHP);
         }
     }
+
+    //public void AddCoin(int amount)
+    //{
+    //    coinCount += amount;
+    //    coinText.text = coinCount.ToString();
+    //    SoundManager.Instance.PlaySFX(SFXType.ItemGet);
+    //}
+
+    //public bool UseCoin(int amount)
+    //{
+
+    //}
+
+    public int GetCoinCount()
+    {
+        return coinCount;
+    }
+
+    private void SaveCoin()
+    {
+        PlayerPrefs.SetInt(COIN_KEY, coinCount);
+        PlayerPrefs.Save();
+    }
+
+    private void LoadCoin()
+    {
+        coinCount = PlayerPrefs.GetInt(COIN_KEY, 0);
+    }
+
 }

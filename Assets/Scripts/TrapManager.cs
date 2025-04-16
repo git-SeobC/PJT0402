@@ -18,6 +18,8 @@ public class TrapManager : MonoBehaviour
     private int direction = 1;
     public TrapType currentType;
 
+    private bool isBreaking = false;
+
     void Start()
     {
         startPos = transform.position;
@@ -75,7 +77,7 @@ public class TrapManager : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.CompareTag("Player") && (currentType == TrapType.BrickTrap))
+        if (collision.collider.CompareTag("Player") && (currentType == TrapType.BrickTrap) && isBreaking == false)
         {
             StartCoroutine(BrickBreakingEvent());
         }
@@ -83,6 +85,7 @@ public class TrapManager : MonoBehaviour
 
     IEnumerator BrickBreakingEvent()
     {
+        isBreaking = true;
         Vector3 originalPos = transform.position;
         float shakeDuration = 0.5f;
         float elapsed = 0f;
@@ -103,6 +106,7 @@ public class TrapManager : MonoBehaviour
         yield return new WaitForSeconds(GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
 
         gameObject.SetActive(false);
+        isBreaking = false;
     }
 
     /// <summary>

@@ -659,7 +659,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 940738338}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1193918154}
+        m_TargetAssemblyTypeName: SceneManagerController, Assembly-CSharp
+        m_MethodName: ExitScene
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &940738338
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -923,7 +935,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Finding My Best Friend
+  m_Text: Rescue my BF
 --- !u!222 &1139367484
 CanvasRenderer:
   m_ObjectHideFlags: 0
