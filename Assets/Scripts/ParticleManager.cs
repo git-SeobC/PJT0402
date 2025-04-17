@@ -8,6 +8,7 @@ public enum ParticleType
     PlayerAttack,
     PlayerDamage,
     PlayerDie,
+    ItemGet,
 }
 
 public class ParticleManager : MonoBehaviour
@@ -20,6 +21,7 @@ public class ParticleManager : MonoBehaviour
     public GameObject playerAttackEffectPrefab;
     public GameObject playerDamageEffectPrefab;
     public GameObject playerDieEffectPrefab;
+    public GameObject ItemGetEffectPrefab;
 
     public int poolSize = 10;
 
@@ -75,6 +77,21 @@ public class ParticleManager : MonoBehaviour
             if (type == ParticleType.PlayerDie)
             {
                 GameObject particleObj = Instantiate(playerDieEffectPrefab);
+                particleObj.transform.position = position;
+                particleObj.transform.localScale = scale;
+                particleObj.SetActive(true);
+
+                Animator animator = particleObj.GetComponent<Animator>();
+                if (animator != null)
+                {
+                    animator.Play(0);
+                    AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+                    Destroy(particleObj, stateInfo.length);
+                }
+            }
+            else if (type == ParticleType.ItemGet)
+            {
+                GameObject particleObj = Instantiate(ItemGetEffectPrefab);
                 particleObj.transform.position = position;
                 particleObj.transform.localScale = scale;
                 particleObj.SetActive(true);

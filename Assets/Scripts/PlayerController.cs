@@ -135,6 +135,7 @@ public class PlayerController : MonoBehaviour
                 GameManager.Instance.SetLifeUI();
             }
             SoundManager.Instance.PlaySFX(SFXType.PickupItemSFX);
+            ParticleManager.Instance.ParticlePlay(ParticleType.ItemGet, collision.transform.position, new Vector3(3, 3, 3));
             collision.gameObject.SetActive(false);
         }
         else if (collision.CompareTag("DeathZone"))
@@ -148,9 +149,8 @@ public class PlayerController : MonoBehaviour
             //SoundManager.Instance.PlaySFX(SFXType.PlayerHitSFX);
             //transform.position = StartPlayerPos;
         }
-        else if (collision.CompareTag("Trap"))
+        else if (collision.CompareTag("Trap") || collision.CompareTag("EnemyAttack"))
         {
-            PlayerAttack playerAttack = GetComponent<PlayerAttack>();
             GenerateCameraImpulse();
 
             if (!isInvincible)

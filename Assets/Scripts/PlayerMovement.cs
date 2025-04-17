@@ -16,8 +16,6 @@ public class PlayerMovement : MonoBehaviour
 
     private PlayerAnimation playerAnimation;
 
-    public GameObject AttackObj;
-
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -48,8 +46,8 @@ public class PlayerMovement : MonoBehaviour
         //{
         //    transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
         //}
-
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+        int combinedLayers = LayerMask.GetMask("Ground", "EnemyHead");
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, combinedLayers);
         if (Input.GetButtonDown("Jump") && isGrounded) // 땅에 붙어있는지 확인
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);

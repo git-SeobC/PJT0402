@@ -440,7 +440,7 @@ GameObject:
   - component: {fileID: 159482403}
   m_Layer: 3
   m_Name: TrapBrick (5)
-  m_TagString: Untagged
+  m_TagString: Trap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -613,7 +613,7 @@ GameObject:
   - component: {fileID: 188313664}
   m_Layer: 3
   m_Name: TrapBrick
-  m_TagString: Untagged
+  m_TagString: Trap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1288,7 +1288,7 @@ GameObject:
   m_Component:
   - component: {fileID: 428463502}
   - component: {fileID: 428463503}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: AttackObjLeft
   m_TagString: PlayerAttack
   m_Icon: {fileID: 0}
@@ -1728,7 +1728,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 553121741}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GroundCheckObj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3196,7 +3196,7 @@ GameObject:
   - component: {fileID: 578598272}
   m_Layer: 3
   m_Name: TrapBrick (4)
-  m_TagString: Untagged
+  m_TagString: Trap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3463,7 +3463,7 @@ Transform:
   m_GameObject: {fileID: 623130405}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.775, y: -3, z: 0}
+  m_LocalPosition: {x: 16.65, y: -3, z: 0}
   m_LocalScale: {x: 5, y: 5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3681,7 +3681,7 @@ GameObject:
   - component: {fileID: 851441884}
   - component: {fileID: 851441885}
   - component: {fileID: 851441886}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ApproachDetection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3849,6 +3849,84 @@ Transform:
   m_Children: []
   m_Father: {fileID: 129738126}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &921487947
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 921487948}
+  - component: {fileID: 921487949}
+  m_Layer: 6
+  m_Name: EnemyHead
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &921487948
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 921487947}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1766918747}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &921487949
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 921487947}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -0.0126223415, y: 0.10730797}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.10329133, y: 0.071354575}
+  m_EdgeRadius: 0
 --- !u!1 &973824691
 GameObject:
   m_ObjectHideFlags: 0
@@ -3947,8 +4025,8 @@ GameObject:
   - component: {fileID: 989021026}
   - component: {fileID: 989021023}
   - component: {fileID: 989021027}
-  m_Layer: 0
-  m_Name: PlayerFinn
+  m_Layer: 8
+  m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4124,7 +4202,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
-  jumpForce: 7
+  jumpForce: 8
   rb: {fileID: 0}
   isGrounded: 0
   isFalling: 0
@@ -4133,7 +4211,6 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
-  AttackObj: {fileID: 1991218364}
 --- !u!50 &989021023
 Rigidbody2D:
   serializedVersion: 5
@@ -4149,7 +4226,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 1.5
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -4222,8 +4299,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.006912184, y: 0.098483}
-  m_Size: {x: 0.10306483, y: 0.18101704}
+  m_Offset: {x: 0.008473098, y: 0.098482996}
+  m_Size: {x: 0.114512086, y: 0.18101704}
   m_Direction: 0
 --- !u!1 &990081222
 GameObject:
@@ -4392,6 +4469,7 @@ MonoBehaviour:
   playerAttackEffectPrefab: {fileID: 2733199363856395531, guid: 87b6961b1e959e04ba1e6dcdf7a83436, type: 3}
   playerDamageEffectPrefab: {fileID: 6894512128510593895, guid: ac512d60b27cf5a4f8f9484f34f89a4d, type: 3}
   playerDieEffectPrefab: {fileID: 7224040599765926755, guid: 10de43518655d9c4483cc902364f8c55, type: 3}
+  ItemGetEffectPrefab: {fileID: 1355258600255760397, guid: d5624da1e6a2d1a4fa3df89cce23375e, type: 3}
   poolSize: 10
 --- !u!1 &1089071670
 GameObject:
@@ -4403,7 +4481,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1089071671}
   - component: {fileID: 1089071672}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: AttackObjRight
   m_TagString: PlayerAttack
   m_Icon: {fileID: 0}
@@ -4481,7 +4559,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1118114523}
   - component: {fileID: 1118114524}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TrapTrigger
   m_TagString: Trap
   m_Icon: {fileID: 0}
@@ -5038,7 +5116,7 @@ Transform:
   m_GameObject: {fileID: 1261555973}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.56, y: 0.26, z: 0}
+  m_LocalPosition: {x: 14.5, y: -2.74, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5184,7 +5262,7 @@ GameObject:
   - component: {fileID: 1315112545}
   m_Layer: 3
   m_Name: TrapBrick (3)
-  m_TagString: Untagged
+  m_TagString: Trap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6083,9 +6161,9 @@ GameObject:
   - component: {fileID: 1441419528}
   - component: {fileID: 1441419526}
   - component: {fileID: 1441419531}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TrapSuriken
-  m_TagString: Untagged
+  m_TagString: Trap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6417,7 +6495,7 @@ Transform:
   m_GameObject: {fileID: 1547707302}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 18.375362, y: -2.4066262, z: 0}
+  m_LocalPosition: {x: 21.95, y: -2.4066262, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7554,7 +7632,7 @@ GameObject:
   - component: {fileID: 1676201976}
   m_Layer: 3
   m_Name: TrapBrick (2)
-  m_TagString: Untagged
+  m_TagString: Trap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7727,7 +7805,7 @@ GameObject:
   - component: {fileID: 1677748162}
   m_Layer: 3
   m_Name: TrapBrick (1)
-  m_TagString: Untagged
+  m_TagString: Trap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7906,7 +7984,7 @@ GameObject:
   - component: {fileID: 1683932122}
   - component: {fileID: 1683932120}
   m_Layer: 0
-  m_Name: Player
+  m_Name: PlayerTest
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8029,7 +8107,6 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
-  AttackObj: {fileID: 1991218364}
 --- !u!114 &1683932115
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8208,7 +8285,7 @@ Transform:
   m_GameObject: {fileID: 1707706746}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.06499982, y: -3, z: 0}
+  m_LocalPosition: {x: 22.76, y: -3, z: 0}
   m_LocalScale: {x: 5, y: 5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8334,13 +8411,13 @@ GameObject:
   m_Component:
   - component: {fileID: 1766918747}
   - component: {fileID: 1766918746}
+  - component: {fileID: 1766918750}
   - component: {fileID: 1766918745}
   - component: {fileID: 1766918748}
   - component: {fileID: 1766918749}
-  - component: {fileID: 1766918750}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Orc
-  m_TagString: Untagged
+  m_TagString: Orc
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8431,10 +8508,11 @@ Transform:
   m_GameObject: {fileID: 1766918744}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.47, y: -3, z: 0}
+  m_LocalPosition: {x: 19.61, y: -2.94, z: 0}
   m_LocalScale: {x: 5, y: 5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 921487948}
   - {fileID: 2076960163}
   - {fileID: 2009156059}
   - {fileID: 1653947164}
@@ -8474,8 +8552,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.020061934, y: 0.06865603}
-  m_Size: {x: 0.11256917, y: 0.13582861}
+  m_Offset: {x: -0.008503288, y: 0.08368061}
+  m_Size: {x: 0.1445246, y: 0.16308437}
   m_Direction: 0
 --- !u!50 &1766918749
 Rigidbody2D:
@@ -8489,7 +8567,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 500
+  m_Mass: 50
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 1
@@ -8517,16 +8595,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorChangeDuration: 0.5
-  enemyHp: 10
+  enemyHp: 100
   speed: 2
   damage: 1
   maxDistance: 3
   enemyType: 1
   currentState: 0
   player: {fileID: 989021016}
-  chaseRange: 5
+  chaseRange: 3
   attackRange: 1
-  isAttacking: 0
+  isAttacking: 1
   isGrounded: 0
   groundCheck: {fileID: 2076960163}
   groundCheckRadius: 0.2
@@ -8536,9 +8614,13 @@ MonoBehaviour:
   patrolPoints:
   - {fileID: 623130406}
   - {fileID: 1707706747}
-  invincibilityDuration: 1
-  knockbackForce: 5
+  isInvincible: 0
+  invincibilityDuration: 0.5
+  knockbackForce: 150
   knockbackDuration: 0.2
+  attackObjList:
+  - {fileID: 1653947163}
+  - {fileID: 2009156058}
 --- !u!1 &1779285871
 GameObject:
   m_ObjectHideFlags: 0
@@ -8789,7 +8871,7 @@ GameObject:
   - component: {fileID: 1853182751}
   - component: {fileID: 1853182754}
   - component: {fileID: 1853182755}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TrapA1
   m_TagString: Trap
   m_Icon: {fileID: 0}
@@ -9229,7 +9311,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1972235531
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -9376,9 +9458,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   patrolPoints: []
+  isInvincible: 0
   invincibilityDuration: 1
   knockbackForce: 5
   knockbackDuration: 0.2
+  attackObjList: []
 --- !u!114 &1972235535
 MonoBehaviour:
   m_ObjectHideFlags: 0

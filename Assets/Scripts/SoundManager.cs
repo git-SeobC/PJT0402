@@ -20,7 +20,9 @@ public enum SFXType
     LandingSFX,
     SpikeTrapSFX,
     BladeDieSFX,
-    DefaultDieSFX
+    DefaultDieSFX,
+    OrcHitSFX,
+    OrcDeathSFX
 }
 
 public class SoundManager : MonoBehaviour

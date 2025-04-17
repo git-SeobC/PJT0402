@@ -1,19 +1,13 @@
 fileFormatVersion: 2
-guid: 7b271bd90ed52c7439a0ea24f1eb6b41
+guid: bde4a513ea2ad464e93f962c72453a5e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8051351617050381877
-    second: Orc-Hurt_0
+      213: -2543339511580996964
+    second: S001_nyknck_0
   - first:
-      213: -1185003378899358547
-    second: Orc-Hurt_1
-  - first:
-      213: -2628998458732627980
-    second: Orc-Hurt_2
-  - first:
-      213: 2377824496227862384
-    second: Orc-Hurt_3
+      213: -1668004360883745890
+    second: S001_nyknck_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +40,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -109,89 +103,89 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Orc-Hurt_0
+      name: S001_nyknck_0
       rect:
         serializedVersion: 2
-        x: 41
-        y: 42
-        width: 25
-        height: 17
+        x: 0
+        y: 0
+        width: 32
+        height: 32
       alignment: 9
-      pivot: {x: 0.4652426, y: 0.09960601}
+      pivot: {x: 0.49111995, y: 0.48667988}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 53e0e0843a52cbf60800000000000000
-      internalID: 8051351617050381877
+      spriteID: da14889ed25805740a48367091ae03e8
+      internalID: -693201859
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Orc-Hurt_1
+      name: S001_nyknck_1
       rect:
         serializedVersion: 2
-        x: 141
-        y: 42
-        width: 25
-        height: 17
+        x: 32
+        y: 0
+        width: 32
+        height: 32
       alignment: 9
-      pivot: {x: 0.47103578, y: 0.108124904}
+      pivot: {x: 0.51776004, y: 0.5133199}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: dace01f84b50e8fe0800000000000000
-      internalID: -1185003378899358547
+      spriteID: 72fe7ef9f474d0d4081657390a07ef2a
+      internalID: 95845492
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Orc-Hurt_2
+      name: S001_nyknck_2
       rect:
         serializedVersion: 2
-        x: 241
-        y: 42
-        width: 25
-        height: 17
+        x: 64
+        y: 0
+        width: 32
+        height: 32
       alignment: 9
-      pivot: {x: 0.46524352, y: 0.09960601}
+      pivot: {x: 0.4866798, y: 0.4911199}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 4f73130b4dbe38bd0800000000000000
-      internalID: -2628998458732627980
+      spriteID: dd5a552054d967743b8300a183e9e6ca
+      internalID: 977013451
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Orc-Hurt_3
+      name: S001_nyknck_3
       rect:
         serializedVersion: 2
-        x: 341
-        y: 42
-        width: 25
-        height: 17
+        x: 96
+        y: 0
+        width: 32
+        height: 32
       alignment: 9
-      pivot: {x: 0.4652426, y: 0.09960601}
+      pivot: {x: 0.4866798, y: 0.48667988}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 07742e3f7cabff020800000000000000
-      internalID: 2377824496227862384
+      spriteID: b20a70206c16be64f925d6da26d82fd4
+      internalID: -1930896224
       vertices: []
       indices: 
       edges: []
@@ -200,7 +194,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 2bc81e2bd9916b84db551a76db81b5c8
+    spriteID: 1964073491107174aad223ac0af37f74
     internalID: 0
     vertices: []
     indices: 
@@ -210,10 +204,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Orc-Hurt_0: 8051351617050381877
-      Orc-Hurt_1: -1185003378899358547
-      Orc-Hurt_2: -2628998458732627980
-      Orc-Hurt_3: 2377824496227862384
+      S001_nyknck_0: -693201859
+      S001_nyknck_1: 95845492
+      S001_nyknck_2: 977013451
+      S001_nyknck_3: -1930896224
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

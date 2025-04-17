@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Security.Cryptography;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -13,6 +15,7 @@ public enum EnemyType
 
 public enum StateType
 {
+    None,
     Idle,
     Patrol,
     Chase,
@@ -36,7 +39,7 @@ public class EnemyManager : MonoBehaviour
     public StateType currentState = StateType.Idle;
 
     public Transform player;
-    public float chaseRange = 5.0f;
+    public float chaseRange = 3.0f;
     public float attackRange = 1.0f;
     public bool isAttacking = false;
 
@@ -54,8 +57,8 @@ public class EnemyManager : MonoBehaviour
     private int currentPoint = 0;
     private Animator animator;
     private float distanceToPlayer;
-    private bool isInvincible = false;
-    public float invincibilityDuration = 1.0f;
+    public bool isInvincible = false;
+    public float invincibilityDuration = 0.5f;
     public float knockbackForce = 5.0f;
     private bool isKnockback = false;
     public float knockbackDuration = 0.2f;
@@ -63,24 +66,24 @@ public class EnemyManager : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rb;
 
+    public List<GameObject> attackObjList = new List<GameObject>();
+
     void Start()
     {
         objectRenderer = GetComponent<Renderer>();
         orginalColor = objectRenderer.material.color;
         startPos = transform.position;
-        //int randomChoice = Random.Range(0, 1);
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         cld = GetComponent<CapsuleCollider2D>();
         rb = GetComponent<Rigidbody2D>();
 
-        ChangeState(currentState);
-
         if (player == null)
         {
             player = GameObject.FindGameObjectWithTag("Player")?.transform;
         }
-        //stateChangeRoutine = StartCoroutine(RandomStateChanger());
+
+        if (enemyType != EnemyType.None && player != null) ChangeState(StateType.Idle);
     }
 
     private void Update()
@@ -91,101 +94,78 @@ public class EnemyManager : MonoBehaviour
         {
             isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
             distanceToPlayer = Vector2.Distance(transform.position, player.position);
+            #region comment
 
-            return;
+            //if (enemyHp <= 0) currentState = StateType.Death;
 
-            if (enemyHp <= 0) currentState = StateType.Death;
-
-            if (currentState == StateType.Hit)
-            {
-                if (isInvincible == true) return;
-                StopAllCoroutines();
-                SoundManager.Instance.PlaySFX(SFXType.PlayerHitSFX);
-                ParticleManager.Instance.ParticlePlay(ParticleType.PlayerDamage, transform.position, new Vector3(4, 4, 4));
-                StartCoroutine(Invincibility());
-                Vector2 knockbackDirection = spriteRenderer.flipX ? Vector2.right : Vector2.left;
-                animator.SetTrigger("Hit");
-                rb.linearVelocity = Vector2.zero;
-                rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
-                StartCoroutine(KnockbackCoroutine());
-                return;
-            }
-            else if (currentState == StateType.Death)
-            {
-
-            }
-
-            isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-            distanceToPlayer = Vector2.Distance(transform.position, player.position);
-
-            if (distanceToPlayer <= attackRange && isAttacking == false)
-            {
-                if (currentState != StateType.Attack)
-                {
-                    StopAllCoroutines();
-                    currentState = StateType.Attack;
-                    StartCoroutine(AttackRoutine());
-                }
-                return;
-            }
-
-            if (distanceToPlayer <= chaseRange && isAttacking == false)
-            {
-                if (currentState != StateType.Chase)
-                {
-                    if (stateChangeRoutine != null)
-                    {
-                        StopCoroutine(stateChangeRoutine);
-                    }
-                    //Debug.Log($"[상태 전환] 추적 상태 : {stateType}");
-                }
-                Vector3 directionToPlayer = (player.position - transform.position).normalized;
-                if (directionToPlayer.x > 0)
-                {
-                    GetComponent<SpriteRenderer>().flipX = false;
-                }
-                else
-                {
-                    GetComponent<SpriteRenderer>().flipX = true;
-                }
-
-                animator.SetBool("IsWalk", true);
-                transform.position += directionToPlayer * speed * Time.deltaTime;
-                return;
-            }
-
-            //if (currentState == StateType.Chase && distanceToPlayer > chaseRange * 2)
+            //if (currentState == StateType.Hit)
             //{
-            //    //Debug.Log("[상태 전환] 추적 종료");
-            //    currentState = StateType.Patrol;
+            //    if (isInvincible == true) return;
+            //    StopAllCoroutines();
+            //    SoundManager.Instance.PlaySFX(SFXType.PlayerHitSFX);
+            //    ParticleManager.Instance.ParticlePlay(ParticleType.PlayerDamage, transform.position, new Vector3(4, 4, 4));
+            //    StartCoroutine(Invincibility());
+            //    Vector2 knockbackDirection = spriteRenderer.flipX ? Vector2.right : Vector2.left;
+            //    animator.SetTrigger("Hit");
+            //    rb.linearVelocity = Vector2.zero;
+            //    rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
+            //    StartCoroutine(KnockbackCoroutine());
+            //    return;
+            //}
+            //else if (currentState == StateType.Death)
+            //{
+
             //}
 
-            if (currentState == StateType.Attack) return;
-            PatrolMovement();
+            //isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+            //distanceToPlayer = Vector2.Distance(transform.position, player.position);
+
+            //if (distanceToPlayer <= attackRange && isAttacking == false)
+            //{
+            //    if (currentState != StateType.Attack)
+            //    {
+            //        StopAllCoroutines();
+            //        currentState = StateType.Attack;
+            //        StartCoroutine(AttackRoutine());
+            //    }
+            //    return;
+            //}
+
+            //if (distanceToPlayer <= chaseRange && isAttacking == false)
+            //{
+            //    if (currentState != StateType.Chase)
+            //    {
+            //        if (stateChangeRoutine != null)
+            //        {
+            //            StopCoroutine(stateChangeRoutine);
+            //        }
+            //        //Debug.Log($"[상태 전환] 추적 상태 : {stateType}");
+            //    }
+            //    Vector3 directionToPlayer = (player.position - transform.position).normalized;
+            //    if (directionToPlayer.x > 0)
+            //    {
+            //        GetComponent<SpriteRenderer>().flipX = false;
+            //    }
+            //    else
+            //    {
+            //        GetComponent<SpriteRenderer>().flipX = true;
+            //    }
+
+            //    animator.SetBool("IsWalk", true);
+            //    transform.position += directionToPlayer * speed * Time.deltaTime;
+            //    return;
+            //}
+
+            ////if (currentState == StateType.Chase && distanceToPlayer > chaseRange * 2)
+            ////{
+            ////    //Debug.Log("[상태 전환] 추적 종료");
+            ////    currentState = StateType.Patrol;
+            ////}
+
+            //if (currentState == StateType.Attack) return;
+            //PatrolMovement(); 
+            #endregion
         }
-    }
-
-    IEnumerator Invincibility()
-    {
-        isInvincible = true;
-        float elapsedTime = 0f;
-        float blinkInterval = 0.2f;
-
-        Color originalColor = spriteRenderer.color;
-
-        while (elapsedTime < invincibilityDuration)
-        {
-            spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0.4f);
-            yield return new WaitForSeconds(blinkInterval);
-            spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, 1.0f);
-            yield return new WaitForSeconds(blinkInterval);
-            elapsedTime += blinkInterval * 2;
-        }
-
-        spriteRenderer.color = originalColor;
-        isInvincible = false;
-        cld.enabled = false;
-        cld.enabled = true;
     }
 
     IEnumerator KnockbackCoroutine()
@@ -193,19 +173,19 @@ public class EnemyManager : MonoBehaviour
         isKnockback = true;
         yield return new WaitForSeconds(knockbackDuration);
         isKnockback = false;
-        currentState = StateType.Idle;
     }
 
-    #region MyRegion
-    public void ChangeState(StateType newState)
+    public void ChangeState(StateType newState, float Param = 5.0f)
     {
+        if (currentState == newState) return;
         if (stateChangeRoutine != null)
         {
             StopCoroutine(stateChangeRoutine);
+            //StopAllCoroutines();
         }
 
         currentState = newState;
-        animator.SetBool("IsWalk", false);
+        //animator.SetBool("IsWalk", false);
 
         switch (currentState)
         {
@@ -221,29 +201,89 @@ public class EnemyManager : MonoBehaviour
             case StateType.Attack:
                 stateChangeRoutine = StartCoroutine(Attack());
                 break;
-            case StateType.Hit:
-                stateChangeRoutine = StartCoroutine(Hit());
-                break;
             case StateType.Death:
                 stateChangeRoutine = StartCoroutine(Death());
                 break;
+            case StateType.None:
+                StopAllCoroutines();
+                break;
+
         }
     }
 
     private IEnumerator Death()
     {
-        throw new NotImplementedException();
+        animator.SetTrigger("Death");
+        SoundManager.Instance.PlaySFX(SFXType.OrcDeathSFX);
+        while (currentState == StateType.Death)
+        {
+            float elapsedTime = 0f;
+            Color originalColor = spriteRenderer.color;
+            float fadeDuration = animator.GetCurrentAnimatorStateInfo(0).length;
+            while (elapsedTime < fadeDuration)
+            {
+                elapsedTime += Time.deltaTime;
+                float alpha = Mathf.Lerp(1f, 0f, elapsedTime / fadeDuration);
+                spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
+                yield return null;
+            }
+            spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0f);
+            Destroy(gameObject);
+        }
     }
 
-    private IEnumerator Hit()
+    public void Hit(float damage)
     {
-        throw new NotImplementedException();
+        animator.SetBool("IsWalk", false);
+        StartCoroutine(HitCoroutine(damage));
+    }
+    private IEnumerator HitCoroutine(float pDamage = 5.0f)
+    {
+        if (isInvincible) yield break;
+        isInvincible = true;
+        //StopAllCoroutines();
+        enemyHp -= pDamage;
+        SoundManager.Instance.PlaySFX(SFXType.OrcHitSFX);
+        animator.SetTrigger("Hit");
+        Vector2 knockbackDirection = spriteRenderer.flipX ? Vector2.right : Vector2.left;
+        rb.linearVelocity = Vector2.zero;
+        rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
+
+        float elapsedTime = 0f;
+        float blinkInterval = 0.2f;
+        Color originalColor = spriteRenderer.color;
+        while (elapsedTime < invincibilityDuration ||
+            (animator.GetCurrentAnimatorStateInfo(0).IsName("Hit") && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f))
+        {
+            spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0.4f);
+            yield return new WaitForSeconds(blinkInterval);
+            spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, 1.0f);
+            yield return new WaitForSeconds(blinkInterval);
+            elapsedTime += blinkInterval * 2;
+        }
+        cld.enabled = false;
+        cld.enabled = true;
+        isInvincible = false;
+
+        if (enemyHp > 0)
+        {
+            //StartCoroutine(Invincibility());
+            ChangeState(StateType.Chase);
+        }
+        else
+        {
+            ChangeState(StateType.Death);
+        }
     }
 
     private IEnumerator Attack()
     {
         while (currentState == StateType.Attack)
         {
+            while (isInvincible)
+            {
+                yield return null;
+            }
             isAttacking = true;
             //Debug.Log("[공격 상태] 공격 시작");
             animator.SetTrigger("Attack");
@@ -252,51 +292,82 @@ public class EnemyManager : MonoBehaviour
             isAttacking = false;
             //Debug.Log("[공격 상태] 공격 종료, 상태 복귀");
 
-
+            if (distanceToPlayer > chaseRange * 1.5f)
+            {
+                ChangeState(StateType.Idle);
+                yield break;
+            }
+            else
+            {
+                ChangeState(StateType.Chase);
+                yield break;
+            }
         }
     }
 
     private IEnumerator Chase()
     {
+        const float MAX_HEIGHT_DIFF = 0.8f;
+        float chaseStartTime = Time.time;
+
         while (currentState == StateType.Chase)
         {
-            Vector3 directionToPlayer = (player.position - transform.position).normalized;
-            if (Math.Abs(player.position.y - transform.position.y) < 0.8f)
+            while (isInvincible)
             {
-                if (directionToPlayer.x > 0)
-                {
-                    GetComponent<SpriteRenderer>().flipX = false;
-                }
-                else
-                {
-                    GetComponent<SpriteRenderer>().flipX = true;
-                }
-
-                animator.SetBool("IsWalk", true);
-                transform.position += directionToPlayer * speed * Time.deltaTime;
-                float distance = Vector2.Distance(transform.position, player.position);
-                if (distance < attackRange)
-                {
-                    ChangeState(StateType.Attack);
-                    yield break;
-                }
-                else if (distance > chaseRange)
-                {
-                    ChangeState(StateType.Idle);
-                    yield break;
-                }
+                yield return null;
             }
+            float heightDiff = Mathf.Abs(player.position.y - transform.position.y);
+
+            if (heightDiff > MAX_HEIGHT_DIFF)
+            {
+                ChangeState(StateType.Idle);
+                yield break;
+            }
+
+            if (distanceToPlayer < attackRange)
+            {
+                ChangeState(StateType.Attack);
+                yield break;
+            }
+
+            if (distanceToPlayer > chaseRange * 1.5f)
+            {
+                ChangeState(StateType.Idle);
+                yield break;
+            }
+
+            Vector3 directionToPlayer = (player.position - transform.position).normalized;
+            float directionSign = Mathf.Sign(directionToPlayer.x);
+            spriteRenderer.flipX = directionSign < 0;
+
+            animator.SetBool("IsWalk", true);
+            transform.position += directionToPlayer * speed * Time.deltaTime;
+
             yield return null;
         }
     }
 
     private IEnumerator Patrol()
     {
-        while (currentState == StateType.Patrol)
+        animator.SetBool("IsWalk", true);
+        //float patrolTimer = 0;
+        //float patrolDuration = 5.0f; // 순찰 상태 지속 시간
+        while (currentState == StateType.Patrol/* && patrolTimer < patrolDuration*/)
         {
+            while (isInvincible)
+            {
+                yield return null;
+            }
+            //patrolTimer += Time.deltaTime;
+
+            if (distanceToPlayer < chaseRange)
+            {
+                ChangeState(StateType.Chase);
+                yield break;
+            }
+
             if (patrolPoints.Length > 0)
             {
-                animator.SetBool("IsWalk", true);
                 Transform targetPoint = patrolPoints[currentPoint];
                 if (transform.position.x > targetPoint.position.x)
                 {
@@ -313,23 +384,6 @@ public class EnemyManager : MonoBehaviour
                 {
                     currentPoint = (currentPoint + 1) % patrolPoints.Length;
                 }
-
-                float distance = Vector2.Distance(transform.position, player.position);
-
-                if (distance < chaseRange)
-                {
-                    ChangeState(StateType.Chase);
-                    yield break;
-                }
-                else if (distance < attackRange)
-                {
-                    ChangeState(StateType.Attack);
-                    yield break;
-                }
-            }
-            else
-            {
-                ChangeState(StateType.Idle);
             }
             yield return null;
         }
@@ -337,54 +391,36 @@ public class EnemyManager : MonoBehaviour
 
     private IEnumerator Idle()
     {
-        animator.Play("EnemyIdle");
-
+        const float MAX_HEIGHT_DIFF = 1.5f;
+        const float MIN_IDLE_DURATION = 0.1f;
+        animator.SetBool("IsWalk", false);
+        yield return new WaitForSeconds(MIN_IDLE_DURATION);
         while (currentState == StateType.Idle)
         {
-            animator.SetBool("IsWalk", false);
-            distanceToPlayer = Vector2.Distance(transform.position, player.position);
-
+            while (isInvincible)
+            {
+                yield return null;
+            }
+            float heightDiff = Mathf.Abs(player.position.y - transform.position.y);
+            if (heightDiff > MAX_HEIGHT_DIFF)
+            {
+                ChangeState(StateType.Patrol);
+                yield break;
+            }
             if (distanceToPlayer < chaseRange)
             {
                 ChangeState(StateType.Chase);
                 yield break;
             }
-            else
+            else if (distanceToPlayer > chaseRange)
             {
                 ChangeState(StateType.Patrol);
                 yield break;
             }
+
+            yield return null;
         }
     }
-    #endregion
-
-    private void PatrolMovement()
-    {
-        if (currentState == StateType.Patrol)
-        {
-            if (patrolPoints.Length > 0)
-            {
-                animator.SetBool("IsWalk", true);
-                Transform targetPoint = patrolPoints[currentPoint];
-                if (transform.position.x > targetPoint.position.x)
-                {
-                    direction = -1;
-                    GetComponent<SpriteRenderer>().flipX = true;
-                }
-                else if (transform.position.x < targetPoint.position.x)
-                {
-                    direction = 1;
-                    GetComponent<SpriteRenderer>().flipX = false;
-                }
-                transform.position += new Vector3(speed * direction * Time.deltaTime, 0, 0);
-                if (Vector3.Distance(transform.position, targetPoint.position) < 0.5f)
-                {
-                    currentPoint = (currentPoint + 1) % patrolPoints.Length;
-                }
-            }
-        }
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("PlayerAttack"))
@@ -401,30 +437,109 @@ public class EnemyManager : MonoBehaviour
                 ParticleManager.Instance.ParticlePlay(ParticleType.PlayerAttack, spawnPosition, new Vector3(4, 4, 4));
             }
 
-            enemyHp -= 5.0f;
-            if (enemyHp > 0) /*StartCoroutine(ChangeColorTemporatily());*/
-                currentState = StateType.Hit;
-            //else Destroy(gameObject);
+            Hit(5.0f);
         }
     }
 
-    private IEnumerator ChangeColorTemporatily()
+    #region comment
+
+    //private IEnumerator ChangeColorTemporatily()
+    //{
+    //    SoundManager.Instance.PlaySFX(SFXType.EnemyDamagedSFX);
+    //    objectRenderer.material.color = Color.red;
+    //    yield return new WaitForSeconds(colorChangeDuration);
+    //    objectRenderer.material.color = orginalColor;
+    //}
+
+    //IEnumerator AttackRoutine()
+    //{
+    //    isAttacking = true;
+    //    //Debug.Log("[공격 상태] 공격 시작");
+    //    animator.SetTrigger("Attack");
+    //    SoundManager.Instance.PlaySFX(SFXType.EnemyDamagedSFX);
+    //    yield return new WaitForSeconds(1.0f);
+    //    currentState = StateType.Idle;
+    //    isAttacking = false;
+    //    //Debug.Log("[공격 상태] 공격 종료, 상태 복귀");
+    //}
+
+    //private void PatrolMovement()
+    //{
+    //    if (currentState == StateType.Patrol)
+    //    {
+    //        if (patrolPoints.Length > 0)
+    //        {
+    //            animator.SetBool("IsWalk", true);
+    //            Transform targetPoint = patrolPoints[currentPoint];
+    //            if (transform.position.x > targetPoint.position.x)
+    //            {
+    //                direction = -1;
+    //                GetComponent<SpriteRenderer>().flipX = true;
+    //            }
+    //            else if (transform.position.x < targetPoint.position.x)
+    //            {
+    //                direction = 1;
+    //                GetComponent<SpriteRenderer>().flipX = false;
+    //            }
+    //            transform.position += new Vector3(speed * direction * Time.deltaTime, 0, 0);
+    //            if (Vector3.Distance(transform.position, targetPoint.position) < 0.5f)
+    //            {
+    //                currentPoint = (currentPoint + 1) % patrolPoints.Length;
+    //            }
+    //        }
+    //    }
+    //}
+    #endregion
+
+    IEnumerator Invincibility()
     {
-        SoundManager.Instance.PlaySFX(SFXType.EnemyDamagedSFX);
-        objectRenderer.material.color = Color.red;
-        yield return new WaitForSeconds(colorChangeDuration);
-        objectRenderer.material.color = orginalColor;
+        float elapsedTime = 0f;
+        float blinkInterval = 0.2f;
+
+        Color originalColor = spriteRenderer.color;
+
+        while (elapsedTime < invincibilityDuration)
+        {
+            spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0.4f);
+            yield return new WaitForSeconds(blinkInterval);
+            spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, 1.0f);
+            yield return new WaitForSeconds(blinkInterval);
+            elapsedTime += blinkInterval * 2;
+        }
+
+        spriteRenderer.color = originalColor;
+        cld.enabled = false;
+        cld.enabled = true;
+        isInvincible = false;
+    }
+    /// <summary>
+    /// 애니메이션에서 호출하는 메소드
+    /// </summary>
+    public void AttackStart()
+    {
+        bool isFacingLeft = GetComponent<SpriteRenderer>().flipX;
+        if (isFacingLeft)
+        {
+            if (attackObjList.Count > 0)
+            {
+                attackObjList[0].SetActive(true);
+            }
+        }
+        else
+        {
+            if (attackObjList.Count > 0)
+            {
+                attackObjList[1].SetActive(true);
+            }
+        }
     }
 
-    IEnumerator AttackRoutine()
+    /// <summary>
+    /// 애니메이션에서 호출하는 메소드
+    /// </summary>
+    public void AttackEnd()
     {
-        isAttacking = true;
-        //Debug.Log("[공격 상태] 공격 시작");
-        animator.SetTrigger("Attack");
-        SoundManager.Instance.PlaySFX(SFXType.EnemyDamagedSFX);
-        yield return new WaitForSeconds(1.0f);
-        currentState = StateType.Idle;
-        isAttacking = false;
-        //Debug.Log("[공격 상태] 공격 종료, 상태 복귀");
+        attackObjList[0].SetActive(false);
+        attackObjList[1].SetActive(false);
     }
 }
