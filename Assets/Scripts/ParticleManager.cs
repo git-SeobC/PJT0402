@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -52,7 +53,7 @@ public class ParticleManager : MonoBehaviour
         }
     }
 
-    public void ParticlePlay(ParticleType type, Vector3 position, Vector3 scale)
+    public void ParticlePlay(ParticleType type, Vector3 position, Vector3 scale = default)
     {
         if (particlePools.ContainsKey(type))
         {
@@ -78,7 +79,7 @@ public class ParticleManager : MonoBehaviour
             {
                 GameObject particleObj = Instantiate(playerDieEffectPrefab);
                 particleObj.transform.position = position;
-                particleObj.transform.localScale = scale;
+                particleObj.transform.localScale = scale != default ? scale : particleObj.transform.localScale;
                 particleObj.SetActive(true);
 
                 Animator animator = particleObj.GetComponent<Animator>();
@@ -93,7 +94,7 @@ public class ParticleManager : MonoBehaviour
             {
                 GameObject particleObj = Instantiate(ItemGetEffectPrefab);
                 particleObj.transform.position = position;
-                particleObj.transform.localScale = scale;
+                particleObj.transform.localScale = scale != default ? scale : particleObj.transform.localScale;
                 particleObj.SetActive(true);
 
                 Animator animator = particleObj.GetComponent<Animator>();

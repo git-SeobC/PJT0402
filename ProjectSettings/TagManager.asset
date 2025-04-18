@@ -10,6 +10,7 @@ TagManager:
   - Life
   - Orc
   - EnemyAttack
+  - Portal
   layers:
   - Default
   - TransparentFX

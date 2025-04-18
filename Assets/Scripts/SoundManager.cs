@@ -6,7 +6,8 @@ using System.Collections;
 
 public enum BGMType
 {
-    Scene1StrangeFarmBGM
+    Scene1StrangeFarmBGM,
+    Scene2CaveBGM
 }
 
 public enum SFXType
@@ -17,12 +18,18 @@ public enum SFXType
     PlayerStepSFX,
     PickupItemSFX,
     MenuOpenSFX,
+    MenuSelectSFX,
+    MenuClickSFX,
     LandingSFX,
     SpikeTrapSFX,
     BladeDieSFX,
     DefaultDieSFX,
     OrcHitSFX,
-    OrcDeathSFX
+    OrcDeathSFX,
+    BrickBreakSFX,
+    ItemLifeSFX,
+    LoseSoundSFX,
+    GameClearSoundSFX,
 }
 
 public class SoundManager : MonoBehaviour
@@ -155,6 +162,26 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    public void StopBGM(float fadeTime = 1.0f)
+    {
+        if (bgmSource.isPlaying)
+        {
+            if (fadeTime <= 0)
+            {
+                bgmSource.Stop();
+                bgmSource.clip = null;
+            }
+            else
+            {
+                StartCoroutine(FadeOutBGM(() =>
+                {
+                    bgmSource.Stop();
+                    bgmSource.clip = null;
+                }, fadeTime));
+            }
+        }
+    }
+
     private IEnumerator FadeOutBGM(Action onComplete, float duration)
     {
         float startVolume = bgmSource.volume;
@@ -195,18 +222,6 @@ public class SoundManager : MonoBehaviour
     {
         sfxSource.volume = volume;
         PlayerPrefs.SetFloat("SFXVolume", volume);
-    }
-
-
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }
 

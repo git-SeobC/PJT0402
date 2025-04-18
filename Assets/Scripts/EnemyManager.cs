@@ -215,21 +215,9 @@ public class EnemyManager : MonoBehaviour
     {
         animator.SetTrigger("Death");
         SoundManager.Instance.PlaySFX(SFXType.OrcDeathSFX);
-        while (currentState == StateType.Death)
-        {
-            float elapsedTime = 0f;
-            Color originalColor = spriteRenderer.color;
-            float fadeDuration = animator.GetCurrentAnimatorStateInfo(0).length;
-            while (elapsedTime < fadeDuration)
-            {
-                elapsedTime += Time.deltaTime;
-                float alpha = Mathf.Lerp(1f, 0f, elapsedTime / fadeDuration);
-                spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
-                yield return null;
-            }
-            spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0f);
-            Destroy(gameObject);
-        }
+        yield return new WaitForSeconds(1.0f);
+        gameObject.SetActive(false);
+        ChangeState(StateType.None);
     }
 
     public void Hit(float damage)
@@ -244,29 +232,34 @@ public class EnemyManager : MonoBehaviour
         //StopAllCoroutines();
         enemyHp -= pDamage;
         SoundManager.Instance.PlaySFX(SFXType.OrcHitSFX);
-        animator.SetTrigger("Hit");
-        Vector2 knockbackDirection = spriteRenderer.flipX ? Vector2.right : Vector2.left;
-        rb.linearVelocity = Vector2.zero;
-        rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
-
-        float elapsedTime = 0f;
-        float blinkInterval = 0.2f;
-        Color originalColor = spriteRenderer.color;
-        while (elapsedTime < invincibilityDuration ||
-            (animator.GetCurrentAnimatorStateInfo(0).IsName("Hit") && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f))
-        {
-            spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0.4f);
-            yield return new WaitForSeconds(blinkInterval);
-            spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, 1.0f);
-            yield return new WaitForSeconds(blinkInterval);
-            elapsedTime += blinkInterval * 2;
-        }
-        cld.enabled = false;
-        cld.enabled = true;
-        isInvincible = false;
 
         if (enemyHp > 0)
         {
+            animator.SetTrigger("Hit");
+            while (!animator.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
+            {
+                yield return null;
+            }
+            Vector2 knockbackDirection = spriteRenderer.flipX ? Vector2.right : Vector2.left;
+            rb.linearVelocity = Vector2.zero;
+            rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
+
+            float elapsedTime = 0f;
+            float blinkInterval = 0.2f;
+            Color originalColor = spriteRenderer.color;
+            while (elapsedTime < invincibilityDuration ||
+                (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f))
+            {
+                spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0.4f);
+                yield return new WaitForSeconds(blinkInterval);
+                spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, 1.0f);
+                yield return new WaitForSeconds(blinkInterval);
+                elapsedTime += blinkInterval * 2;
+            }
+            cld.enabled = false;
+            cld.enabled = true;
+            isInvincible = false;
+
             //StartCoroutine(Invincibility());
             ChangeState(StateType.Chase);
         }

@@ -21,11 +21,13 @@ public class PlayerDie : MonoBehaviour
         }
         else if (collision.CompareTag("DeathZone"))
         {
-
+            SoundManager.Instance.PlaySFX(SFXType.DefaultDieSFX);
         }
         else
         {
             SoundManager.Instance.PlaySFX(SFXType.DefaultDieSFX);
         }
+
+        SceneManagerController.Instance.GameOver();
     }
 }

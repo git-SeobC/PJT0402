@@ -17,7 +17,6 @@ public class PlayerAttack : MonoBehaviour
     public float shakeMagnitude = 0.1f;
     private Vector3 originalPos;
 
-
     void Start()
     {
         playerAnimation = GetComponent<PlayerAnimation>();
@@ -35,7 +34,6 @@ public class PlayerAttack : MonoBehaviour
         {
             return;
         }
-
 
         if (playerAnimation != null)
         {

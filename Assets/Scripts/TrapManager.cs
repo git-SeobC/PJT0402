@@ -100,6 +100,7 @@ public class TrapManager : MonoBehaviour
         }
 
         GetComponent<Animator>().SetTrigger("Broken");
+        SoundManager.Instance.PlaySFX(SFXType.BrickBreakSFX);
 
         gameObject.GetComponent<Collider2D>().enabled = false;
 

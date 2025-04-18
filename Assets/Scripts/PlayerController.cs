@@ -10,11 +10,8 @@ public class PlayerController : MonoBehaviour
 
     private PlayerMovement movement;
     private PlayerAttack attack;
-    private PlayerHurt hurt;
     private PlayerDie die;
     private Rigidbody2D rb;
-
-    private Vector3 StartPlayerPos;
 
     private bool isPaused = false;
     public GameObject pauseMenuUI;
@@ -47,19 +44,12 @@ public class PlayerController : MonoBehaviour
 
         movement = GetComponent<PlayerMovement>();
         attack = GetComponent<PlayerAttack>();
-        hurt = GetComponent<PlayerHurt>();
         die = GetComponent<PlayerDie>();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         cld = GetComponent<CapsuleCollider2D>();
     }
-
-    void Start()
-    {
-        StartPlayerPos = transform.position;
-    }
-
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -134,8 +124,8 @@ public class PlayerController : MonoBehaviour
                 playerHP++;
                 GameManager.Instance.SetLifeUI();
             }
-            SoundManager.Instance.PlaySFX(SFXType.PickupItemSFX);
-            ParticleManager.Instance.ParticlePlay(ParticleType.ItemGet, collision.transform.position, new Vector3(3, 3, 3));
+            SoundManager.Instance.PlaySFX(SFXType.ItemLifeSFX);
+            ParticleManager.Instance.ParticlePlay(ParticleType.ItemGet, collision.transform.position);
             collision.gameObject.SetActive(false);
         }
         else if (collision.CompareTag("DeathZone"))

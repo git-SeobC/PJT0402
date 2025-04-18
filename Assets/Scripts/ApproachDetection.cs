@@ -7,15 +7,6 @@ public class ApproachDetection : MonoBehaviour
 {
     public Animator animator;
 
-    void Start()
-    {
-    }
-
-    void Update()
-    {
- 
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
