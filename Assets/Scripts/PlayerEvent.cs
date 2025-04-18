@@ -5,11 +5,7 @@ public class PlayerEvent : MonoBehaviour
     public GameObject ArrowKeyObj;
     public GameObject JumpKeyObj;
     public GameObject AttackKeyObj;
-
-    private void Start()
-    {
-        
-    }
+    public GameObject UpKeyObj;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -24,6 +20,10 @@ public class PlayerEvent : MonoBehaviour
         else if (collision.name == "TutorialEvent3")
         {
             AttackKeyObj.SetActive(true);
+        }
+        else if (collision.name == "Portal")
+        {
+            UpKeyObj.SetActive(true);
         }
     }
 
@@ -40,6 +40,22 @@ public class PlayerEvent : MonoBehaviour
         else if (collision.name == "TutorialEvent3" && collision.gameObject.activeInHierarchy)
         {
             AttackKeyObj.SetActive(false);
+        }
+        // activeInHierarchy 부모 오브젝트가 Off되어있으면 false임 -> 실질적으로 On이 가능한 상태인지 확인하는 용도
+        else if (collision.name == "Portal" && collision.gameObject.activeInHierarchy)
+        {
+            UpKeyObj.SetActive(false);
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Portal"))
+        {
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                SceneManagerController.Instance.LoadNextScene();
+            }
         }
     }
 }
