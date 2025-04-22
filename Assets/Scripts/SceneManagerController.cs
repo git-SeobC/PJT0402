@@ -36,6 +36,7 @@ public class SceneManagerController : MonoBehaviour
         if (!isFading)
         {
             nextSceneName = sceneName;
+            Debug.Log(nextSceneName);
             StartCoroutine(FadeInAndLoadScene());
         }
     }
@@ -125,25 +126,6 @@ public class SceneManagerController : MonoBehaviour
             // 현재의 딜레이만큼 대기
         }
     }
-
-
-    IEnumerator FadeInAndLoadScene()
-    {
-        isFading = true;
-        basePanel.gameObject.SetActive(true);
-
-        //FadeImage(0, 1, fadeDuration);
-
-        SceneManager.LoadScene("LoadingScene");
-
-        //yield return StartCoroutine(LoadLoadingAndNextScene());
-
-        yield return StartCoroutine(FadeImage(1, 0, fadeDuration));
-
-        isFading = false;
-        basePanel.gameObject.SetActive(false);
-    }
-
     IEnumerator FadeImage(float startAlpha, float endAlpha, float duration)
     {
         //Debug.Log("FadeOut Start ----------------------------");
@@ -164,34 +146,70 @@ public class SceneManagerController : MonoBehaviour
         //Debug.Log("FadeOut End ----------------------------");
     }
 
+    IEnumerator FadeInAndLoadScene()
+    {
+        isFading = true;
+        basePanel.gameObject.SetActive(true);
+
+        yield return StartCoroutine(FadeImage(0, 1, fadeDuration));
+
+        //SceneManager.LoadScene("LoadingScene");
+
+        yield return StartCoroutine(LoadLoadingAndNextScene());
+
+        yield return StartCoroutine(FadeImage(1, 0, fadeDuration));
+
+        isFading = false;
+        basePanel.gameObject.SetActive(false);
+    }
+
     IEnumerator LoadLoadingAndNextScene()
     {
         AsyncOperation loadingSceneOp = SceneManager.LoadSceneAsync("LoadingScene", LoadSceneMode.Additive);
-        loadingSceneOp.allowSceneActivation = false;
+        loadingSceneOp.allowSceneActivation = true;
 
+        // 2. 로딩씬 완료 대기
         while (!loadingSceneOp.isDone)
         {
-            if (loadingSceneOp.progress >= 0.9f)
-            {
-                loadingSceneOp.allowSceneActivation = true;
-            }
             yield return null;
         }
 
-        Slider loadingSlider = null;
-        GameObject sliderObj = GameObject.Find("LoadingSlider");
-        if (sliderObj != null)
-        {
-            loadingSlider = sliderObj.GetComponent<Slider>();
-        }
         AsyncOperation nextSceneOp = SceneManager.LoadSceneAsync(nextSceneName);
+        nextSceneOp.allowSceneActivation = false;
+
+        float minDisplayTime = 2.0f;
+        float loadingStartTime = Time.time;
+        bool minTimePassed = false;
+
+        Slider loadingSlider = GameObject.Find("LoadingSlider")?.GetComponent<Slider>();
+
+        //while (!loadingSceneOp.isDone)
+        //{
+        //    if (loadingSceneOp.progress >= 0.9f)
+        //    {
+        //        loadingSceneOp.allowSceneActivation = true;
+        //    }
+        //    yield return null;
+        //}
 
         while (!nextSceneOp.isDone)
         {
+            if (Time.time - loadingStartTime >= minDisplayTime)
+            {
+                minTimePassed = true;
+            }
+            float progress = Mathf.Clamp01(nextSceneOp.progress / 0.9f);
+
             if (loadingSlider != null)
             {
-                loadingSlider.value = nextSceneOp.progress;
+                loadingSlider.value = progress;
             }
+
+            if (minTimePassed && nextSceneOp.progress >= 0.9f)
+            {
+                nextSceneOp.allowSceneActivation = true; // 씬 활성화
+            }
+
             yield return null;
         }
 
@@ -222,5 +240,10 @@ public class SceneManagerController : MonoBehaviour
         SoundManager.Instance.PlaySFX(SFXType.MenuClickSFX);
         Debug.Log("게임시작");
         StartSeneTransition("Scene1");
+    }
+
+    public void LoadNextScene()
+    {
+
     }
 }

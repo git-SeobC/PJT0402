@@ -18,16 +18,16 @@ public class LoadingScript : MonoBehaviour
 
     void Update()
     {
-        timer += Time.deltaTime;
-        float progress = Mathf.Clamp01(timer / loadingTime);
-        loadingSlider.value = progress;
+        //timer += Time.deltaTime;
+        //float progress = Mathf.Clamp01(timer / loadingTime);
+        //loadingSlider.value = progress;
 
-        UpdateHandlePosition(progress);
+        //UpdateHandlePosition(progress);
 
-        if (progress >= 1f)
-        {
-            SceneManager.LoadScene(nextSceneName);
-        }
+        //if (progress >= 1f)
+        //{
+        //    SceneManager.LoadScene(nextSceneName);
+        //}
     }
 
     void UpdateHandlePosition(float progress)
