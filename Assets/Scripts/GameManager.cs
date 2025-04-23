@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Unity.AppUI.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 public class GameManager : MonoBehaviour
 {
@@ -59,13 +60,24 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void SetPlayerStartPosition(int pIndex)
+    public IEnumerator SetPlayerStartPosition(int pIndex)
     {
-        StartCoroutine(LoadingStart());
+        // 1. 기존 UI 비활성화 및 로딩 UI 페이드 인
+        yield return StartCoroutine(LoadingStart());
 
+        // 2. 카메라 경계 변경 및 플레이어 이동
         cinemachineConfiner.BoundingShape2D = mapBoundaries[pIndex];
+        yield return StartCoroutine(DelayedTeleport(pIndex));
 
-        StartCoroutine(DelayedTeleport(pIndex));
+        // 3. 로딩 UI 페이드 아웃
+        yield return StartCoroutine(FadeImage(1, 0, 1.0f));
+
+        // 4. 모든 UI 요소 정리
+        basePanel.gameObject.SetActive(false);
+        loadingDoor.gameObject.SetActive(false);
+        loadingSlider.gameObject.SetActive(false);
+        LoadingUI.SetActive(false);
+        UI.SetActive(true);
     }
 
     private IEnumerator DelayedTeleport(int index)
@@ -87,19 +99,18 @@ public class GameManager : MonoBehaviour
         UI.SetActive(false);
 
         LoadingUI.SetActive(true);
-        basePanel.enabled = true;
+        basePanel.gameObject.SetActive(true);
 
-        StartCoroutine(FadeImage(0, 1, 1.0f));
-        yield return new WaitForSeconds(1.0f);
+        yield return StartCoroutine(FadeImage(0, 1, 1.0f));
 
-        StartCoroutine(LoadingCoroutine());
-        yield return new WaitForSeconds(2.0f);
+        loadingDoor.gameObject.SetActive(true);
+        loadingSlider.gameObject.SetActive(true);
+
+        yield return StartCoroutine(LoadingCoroutine());
     }
 
     private IEnumerator LoadingCoroutine()
     {
-        yield return null;
-
         float timer = 0f;
         float animationTimer = 0f;
         float loadingTime = 1.0f;
@@ -124,9 +135,9 @@ public class GameManager : MonoBehaviour
                 SoundManager.Instance.PlaySFX(SFXType.PlayerStepSFX);
             }
             timer += Time.deltaTime;
+            yield return null;
         }
-
-        yield return null;
+        SoundManager.Instance.PlaySFX(SFXType.LoadingFinishSFX);
     }
 
     IEnumerator FadeImage(float startAlpha, float endAlpha, float duration)

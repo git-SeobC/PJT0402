@@ -243,9 +243,4 @@ public class SceneManagerController : MonoBehaviour
         Debug.Log("게임시작");
         StartSeneTransition("Scene1");
     }
-
-    public void LoadNextScene()
-    {
-
-    }
 }
