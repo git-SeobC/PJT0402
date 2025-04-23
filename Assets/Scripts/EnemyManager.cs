@@ -214,12 +214,12 @@ public class EnemyManager : MonoBehaviour
         ChangeState(StateType.None);
     }
 
-    public void Hit(float damage)
+    public void Hit(float damage, string pCollisionName = "")
     {
         animator.SetBool("IsWalk", false);
-        StartCoroutine(HitCoroutine(damage));
+        StartCoroutine(HitCoroutine(damage, pCollisionName));
     }
-    private IEnumerator HitCoroutine(float pDamage = 5.0f)
+    private IEnumerator HitCoroutine(float pDamage = 5.0f, string pCollisionName = "")
     {
         if (isInvincible) yield break;
         isInvincible = true;
@@ -234,7 +234,13 @@ public class EnemyManager : MonoBehaviour
             {
                 yield return null;
             }
-            Vector2 knockbackDirection = spriteRenderer.flipX ? Vector2.right : Vector2.left;
+
+            // 넉백 방향 확인
+            Vector2 knockbackDirection;
+            if (pCollisionName == "AttackObjRight") knockbackDirection = Vector2.right;
+            else if (pCollisionName == "AttackObjLeft") knockbackDirection = Vector2.left;
+            else knockbackDirection = spriteRenderer.flipX ? Vector2.right : Vector2.left;
+
             rb.linearVelocity = Vector2.zero;
             rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
 
@@ -424,7 +430,7 @@ public class EnemyManager : MonoBehaviour
                 ParticleManager.Instance.ParticlePlay(ParticleType.PlayerAttack, spawnPosition, new Vector3(4, 4, 4));
             }
 
-            Hit(5.0f);
+            Hit(5.0f, collision.name);
         }
     }
 
@@ -476,29 +482,30 @@ public class EnemyManager : MonoBehaviour
     //        }
     //    }
     //}
+
+    //IEnumerator Invincibility()
+    //{
+    //    float elapsedTime = 0f;
+    //    float blinkInterval = 0.2f;
+
+    //    Color originalColor = spriteRenderer.color;
+
+    //    while (elapsedTime < invincibilityDuration)
+    //    {
+    //        spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0.4f);
+    //        yield return new WaitForSeconds(blinkInterval);
+    //        spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, 1.0f);
+    //        yield return new WaitForSeconds(blinkInterval);
+    //        elapsedTime += blinkInterval * 2;
+    //    }
+
+    //    spriteRenderer.color = originalColor;
+    //    cld.enabled = false;
+    //    cld.enabled = true;
+    //    isInvincible = false;
+    //}
     #endregion
 
-    IEnumerator Invincibility()
-    {
-        float elapsedTime = 0f;
-        float blinkInterval = 0.2f;
-
-        Color originalColor = spriteRenderer.color;
-
-        while (elapsedTime < invincibilityDuration)
-        {
-            spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0.4f);
-            yield return new WaitForSeconds(blinkInterval);
-            spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, 1.0f);
-            yield return new WaitForSeconds(blinkInterval);
-            elapsedTime += blinkInterval * 2;
-        }
-
-        spriteRenderer.color = originalColor;
-        cld.enabled = false;
-        cld.enabled = true;
-        isInvincible = false;
-    }
     /// <summary>
     /// 애니메이션에서 호출하는 메소드
     /// </summary>

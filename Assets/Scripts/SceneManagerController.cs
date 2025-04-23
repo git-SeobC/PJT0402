@@ -31,6 +31,11 @@ public class SceneManagerController : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        SoundManager.Instance.PlayBGM(BGMType.MenuBGM, 1.0f);
+    }
+
     public void StartSeneTransition(string sceneName)
     {
         if (!isFading)
@@ -74,6 +79,7 @@ public class SceneManagerController : MonoBehaviour
         gameOverPanel.gameObject.SetActive(false);
         basePanel.gameObject.SetActive(false);
         SceneManager.LoadScene("LoadingScene");
+        GameManager.Instance.ResetGame();
     }
 
     public void QuitBtnClick()
@@ -169,7 +175,6 @@ public class SceneManagerController : MonoBehaviour
         AsyncOperation loadingSceneOp = SceneManager.LoadSceneAsync("LoadingScene", LoadSceneMode.Additive);
         loadingSceneOp.allowSceneActivation = true;
 
-        // 2. 로딩씬 완료 대기
         while (!loadingSceneOp.isDone)
         {
             yield return null;
@@ -239,8 +244,9 @@ public class SceneManagerController : MonoBehaviour
 
     public void StartGameMenu()
     {
+        SoundManager.Instance.StopBGM(0);
         SoundManager.Instance.PlaySFX(SFXType.MenuClickSFX);
-        Debug.Log("게임시작");
+        //Debug.Log("게임시작");
         StartSeneTransition("Scene1");
     }
 }

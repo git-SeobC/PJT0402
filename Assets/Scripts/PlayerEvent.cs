@@ -7,6 +7,16 @@ public class PlayerEvent : MonoBehaviour
     public GameObject AttackKeyObj;
     public GameObject UpKeyObj;
 
+    public bool isInPortal = false;
+
+    private void Update()
+    {
+        if (isInPortal && Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            StartCoroutine(GameManager.Instance.SetPlayerStartPosition());
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.name == "TutorialEvent1")
@@ -24,6 +34,7 @@ public class PlayerEvent : MonoBehaviour
         else if (collision.name == "Portal")
         {
             UpKeyObj.SetActive(true);
+            isInPortal = true;
         }
     }
 
@@ -45,18 +56,20 @@ public class PlayerEvent : MonoBehaviour
         else if (collision.name == "Portal" && collision.gameObject.activeInHierarchy)
         {
             UpKeyObj.SetActive(false);
+            isInPortal = false;
         }
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Portal"))
-        {
-            if (Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                //SceneManagerController.Instance.LoadNextScene();
-                GameManager.Instance.SetPlayerStartPosition(2);
-            }
-        }
-    }
+    //private void OnTriggerStay2D(Collider2D collision)
+    //{
+    //    Debug.Log($"{collision.CompareTag("Portal")}");
+    //    if (collision.CompareTag("Portal"))
+    //    {
+    //        if (Input.GetKeyDown(KeyCode.UpArrow))
+    //        {
+    //            //SceneManagerController.Instance.LoadNextScene();
+    //            GameManager.Instance.SetPlayerStartPosition(2);
+    //        }
+    //    }
+    //}
 }

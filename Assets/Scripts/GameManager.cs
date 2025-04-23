@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Unity.AppUI.UI;
 using static UnityEngine.Rendering.DebugUI;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -25,6 +26,10 @@ public class GameManager : MonoBehaviour
     public GameObject handle;
     public Image basePanel;
     public Image loadingDoor;
+
+    public GameObject[] enemyGroup;
+
+    public int currentMapIndex = 1;
 
     //private const string COIN_KEY = "CoinCount";
     //private const string DAMAGE_KEY = "PlayerDamage";
@@ -47,6 +52,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        currentMapIndex = 1;
         playerController = player.GetComponent<PlayerController>();
         images = Resources.LoadAll<Sprite>("loadingFinn");
         SetLifeUI();
@@ -60,22 +66,43 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public IEnumerator SetPlayerStartPosition(int pIndex)
+    public IEnumerator SetPlayerStartPosition()
     {
-        // 1. 기존 UI 비활성화 및 로딩 UI 페이드 인
+        SoundManager.Instance.StopBGM(0f);
+
+        // 기존 맵 적 오브젝트 비활성화
+        foreach (Transform child in enemyGroup[currentMapIndex].transform)
+        {
+            child.gameObject.SetActive(false);
+        }
         yield return StartCoroutine(LoadingStart());
 
-        // 2. 카메라 경계 변경 및 플레이어 이동
-        cinemachineConfiner.BoundingShape2D = mapBoundaries[pIndex];
-        yield return StartCoroutine(DelayedTeleport(pIndex));
+        currentMapIndex++;
 
-        // 3. 로딩 UI 페이드 아웃
-        yield return StartCoroutine(FadeImage(1, 0, 1.0f));
+        // 다음 맵 적 오브젝트 활성화
+        foreach (Transform child in enemyGroup[currentMapIndex].transform)
+        {
+            child.gameObject.SetActive(true);
+        }
 
-        // 4. 모든 UI 요소 정리
-        basePanel.gameObject.SetActive(false);
+        cinemachineConfiner.enabled = false;
+        cinemachineConfiner.BoundingShape2D = mapBoundaries[currentMapIndex];
+        yield return StartCoroutine(DelayedTeleport(currentMapIndex));
+        yield return new WaitForSeconds(1.0f);
+        cinemachineConfiner.enabled = true;
+        yield return new WaitForSeconds(0.5f);
+
         loadingDoor.gameObject.SetActive(false);
         loadingSlider.gameObject.SetActive(false);
+
+        yield return StartCoroutine(FadeImage(1, 0, 1.0f));
+
+        if (currentMapIndex == 2)
+        {
+            SoundManager.Instance.PlayBGM(BGMType.Scene2BGM, 0f);
+        }
+
+        basePanel.gameObject.SetActive(false);
         LoadingUI.SetActive(false);
         UI.SetActive(true);
     }
@@ -92,12 +119,14 @@ public class GameManager : MonoBehaviour
             rb.linearVelocity = Vector2.zero;
             rb.angularVelocity = 0f;
         }
+
+        CinemachineBrain brain = Camera.main.GetComponent<CinemachineBrain>();
+        if (brain != null) brain.ManualUpdate();
     }
 
     IEnumerator LoadingStart()
     {
         UI.SetActive(false);
-
         LoadingUI.SetActive(true);
         basePanel.gameObject.SetActive(true);
 
@@ -158,6 +187,13 @@ public class GameManager : MonoBehaviour
 
         panelColor.a = endAlpha;
         basePanel.color = panelColor;
+    }
+
+    public void ResetGame()
+    {
+        currentMapIndex = 1;
+        playerController.playerHP = 3;
+        SetLifeUI();
     }
 
     //public void AddCoin(int amount)
