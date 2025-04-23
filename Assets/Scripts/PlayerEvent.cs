@@ -54,7 +54,8 @@ public class PlayerEvent : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.UpArrow))
             {
-                SceneManagerController.Instance.LoadNextScene();
+                //SceneManagerController.Instance.LoadNextScene();
+                GameManager.Instance.SetPlayerStartPosition(2);
             }
         }
     }

@@ -74,9 +74,4 @@ public class PlayerMovement : MonoBehaviour
     {
         SoundManager.Instance.PlaySFX(SFXType.PlayerStepSFX);
     }
-
-    public void AttackObjFilpEvent()
-    {
-
-    }
 }

@@ -6,8 +6,10 @@ using System.Collections;
 
 public enum BGMType
 {
+    MenuBGM,
     Scene1StrangeFarmBGM,
-    Scene2CaveBGM
+    Scene2CaveBGM,
+    Scene2BGM
 }
 
 public enum SFXType
@@ -28,8 +30,11 @@ public enum SFXType
     OrcDeathSFX,
     BrickBreakSFX,
     ItemLifeSFX,
-    LoseSoundSFX,
     GameClearSoundSFX,
+    GameOverSoundSFX,
+    GameOverSound2SFX,
+    LoadingStartSFX,
+    LoadingFinishSFX
 }
 
 public class SoundManager : MonoBehaviour

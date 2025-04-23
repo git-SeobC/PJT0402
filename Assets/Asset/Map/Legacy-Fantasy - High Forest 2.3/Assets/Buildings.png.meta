@@ -106,10 +106,10 @@ TextureImporter:
       name: Buildings_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 159
-        width: 400
-        height: 241
+        x: 271
+        y: 192
+        width: 65
+        height: 65
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,10 +128,10 @@ TextureImporter:
       name: Buildings_1
       rect:
         serializedVersion: 2
-        x: 271
-        y: 31
-        width: 129
-        height: 162
+        x: 340
+        y: 223
+        width: 39
+        height: 56
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -150,7 +150,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: cae3c01de6c97524bb507843308a2afc
     internalID: 0
     vertices: []
     indices: 

@@ -1,12 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngineInternal;
 
 public enum EnemyType
 {
@@ -43,7 +37,7 @@ public class EnemyManager : MonoBehaviour
     public float attackRange = 1.0f;
     public bool isAttacking = false;
 
-    private float stateChangeInterval = 3.0f;
+    //private float stateChangeInterval = 3.0f;
     private Coroutine stateChangeRoutine;
 
     public bool isGrounded;
@@ -60,7 +54,7 @@ public class EnemyManager : MonoBehaviour
     public bool isInvincible = false;
     public float invincibilityDuration = 0.5f;
     public float knockbackForce = 5.0f;
-    private bool isKnockback = false;
+    //private bool isKnockback = false;
     public float knockbackDuration = 0.2f;
     private CapsuleCollider2D cld;
     private SpriteRenderer spriteRenderer;
@@ -170,9 +164,9 @@ public class EnemyManager : MonoBehaviour
 
     IEnumerator KnockbackCoroutine()
     {
-        isKnockback = true;
+        //isKnockback = true;
         yield return new WaitForSeconds(knockbackDuration);
-        isKnockback = false;
+        //isKnockback = false;
     }
 
     public void ChangeState(StateType newState, float Param = 5.0f)

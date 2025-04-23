@@ -55,7 +55,7 @@ public class SceneManagerController : MonoBehaviour
 
         // GameOver 패널 활성화
         gameOverPanel.gameObject.SetActive(true);
-        SoundManager.Instance.PlaySFX(SFXType.LoseSoundSFX);
+        SoundManager.Instance.PlaySFX(SFXType.GameOverSoundSFX);
         // "GAME OVER" 타이핑 효과
         yield return StartCoroutine(TypingGameOver(gameOverText, "GAME OVER"));
 
@@ -126,6 +126,7 @@ public class SceneManagerController : MonoBehaviour
             // 현재의 딜레이만큼 대기
         }
     }
+
     IEnumerator FadeImage(float startAlpha, float endAlpha, float duration)
     {
         //Debug.Log("FadeOut Start ----------------------------");
@@ -198,14 +199,15 @@ public class SceneManagerController : MonoBehaviour
             {
                 minTimePassed = true;
             }
-            float progress = Mathf.Clamp01(nextSceneOp.progress / 0.9f);
 
-            if (loadingSlider != null)
-            {
-                loadingSlider.value = progress;
-            }
+            //float progress = Mathf.Clamp01(nextSceneOp.progress / 0.9f);
 
-            if (minTimePassed && nextSceneOp.progress >= 0.9f)
+            //if (loadingSlider != null)
+            //{
+            //    loadingSlider.value = progress;
+            //}
+
+            if (minTimePassed && nextSceneOp.progress >= 0.9f && loadingSlider.value >= 0.9f)
             {
                 nextSceneOp.allowSceneActivation = true; // 씬 활성화
             }
