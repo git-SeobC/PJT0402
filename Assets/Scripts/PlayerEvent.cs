@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerEvent : MonoBehaviour
@@ -8,13 +9,39 @@ public class PlayerEvent : MonoBehaviour
     public GameObject UpKeyObj;
 
     public bool isInPortal = false;
+    private bool isEnding = false;
+
+    private bool isInputLocked = false;
 
     private void Update()
     {
-        if (isInPortal && Input.GetKeyDown(KeyCode.UpArrow))
+        if (isInputLocked == false)
         {
-            StartCoroutine(GameManager.Instance.SetPlayerStartPosition());
+            if (isInPortal && Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                isInputLocked = true;
+                isInPortal = false;
+                StartCoroutine(GameManager.Instance.SetPlayerStartPosition());
+                StartCoroutine(UnlockInputAfterDelay(3.0f));
+            }
+            else if (isEnding && Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                isInputLocked = true;
+                isEnding = false;
+                GameManager.Instance.StartEndingSequence();
+                StartCoroutine(UnlockInputAfterDelay(3.0f));
+            }
+            //else if (Input.GetKeyDown(KeyCode.E))
+            //{
+            //    GameManager.Instance.StartEndingSequence();
+            //}
         }
+    }
+
+    private IEnumerator UnlockInputAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        isInputLocked = false;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -35,6 +62,10 @@ public class PlayerEvent : MonoBehaviour
         {
             UpKeyObj.SetActive(true);
             isInPortal = true;
+        }
+        else if (collision.name == "Ending")
+        {
+            isEnding = true;
         }
     }
 
@@ -57,6 +88,10 @@ public class PlayerEvent : MonoBehaviour
         {
             UpKeyObj.SetActive(false);
             isInPortal = false;
+        }
+        else if (collision.name == "Ending")
+        {
+            isEnding = false;
         }
     }
 

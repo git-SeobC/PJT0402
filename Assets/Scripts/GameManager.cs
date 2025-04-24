@@ -1,11 +1,8 @@
 using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using Unity.AppUI.UI;
-using static UnityEngine.Rendering.DebugUI;
-using System;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -30,6 +27,20 @@ public class GameManager : MonoBehaviour
     public GameObject[] enemyGroup;
 
     public int currentMapIndex = 1;
+    public bool changeMap = false;
+
+    [Header("Ending Settings")]
+    [SerializeField] private Canvas endingCanvas;
+    [SerializeField] private Text endingText;
+    [SerializeField] private Text creditTextPrefab;
+    [SerializeField] private Transform creditContainer;
+    [SerializeField] private float scrollSpeed = 50f;
+    [SerializeField] private float fadeDuration = 2f;
+    [SerializeField] private float perspectiveScale = 0.9f;
+    [SerializeField] private Transform vanishingPointPanel;
+
+    public Button retryBtn;
+    public Button quitBtn;
 
     //private const string COIN_KEY = "CoinCount";
     //private const string DAMAGE_KEY = "PlayerDamage";
@@ -66,23 +77,29 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void EnemyObjActiveSet(int pIndex, bool pSet)
+    {
+        foreach (Transform child in enemyGroup[pIndex].transform)
+        {
+            child.gameObject.SetActive(pSet);
+        }
+    }
+
     public IEnumerator SetPlayerStartPosition()
     {
+        changeMap = true;
         SoundManager.Instance.StopBGM(0f);
 
         // 기존 맵 적 오브젝트 비활성화
-        foreach (Transform child in enemyGroup[currentMapIndex].transform)
-        {
-            child.gameObject.SetActive(false);
-        }
+        EnemyObjActiveSet(currentMapIndex, false);
+
         yield return StartCoroutine(LoadingStart());
 
         currentMapIndex++;
 
-        // 다음 맵 적 오브젝트 활성화
-        foreach (Transform child in enemyGroup[currentMapIndex].transform)
+        if (enemyGroup[currentMapIndex] != null)
         {
-            child.gameObject.SetActive(true);
+            EnemyObjActiveSet(currentMapIndex, true);
         }
 
         cinemachineConfiner.enabled = false;
@@ -95,8 +112,6 @@ public class GameManager : MonoBehaviour
         loadingDoor.gameObject.SetActive(false);
         loadingSlider.gameObject.SetActive(false);
 
-        yield return StartCoroutine(FadeImage(1, 0, 1.0f));
-
         if (currentMapIndex == 2)
         {
             SoundManager.Instance.PlayBGM(BGMType.Scene2BGM, 0f);
@@ -105,6 +120,8 @@ public class GameManager : MonoBehaviour
         basePanel.gameObject.SetActive(false);
         LoadingUI.SetActive(false);
         UI.SetActive(true);
+        changeMap = false;
+        yield return StartCoroutine(FadeImage(1, 0, 1.0f));
     }
 
     private IEnumerator DelayedTeleport(int index)
@@ -194,6 +211,174 @@ public class GameManager : MonoBehaviour
         currentMapIndex = 1;
         playerController.playerHP = 3;
         SetLifeUI();
+    }
+
+    string endingStory = "핀은 제이크를 찾기 위해 얼음대왕 성 침투에 성공하였지만...";
+    string initialMessage = "Thank you for playing";
+    string[] credits = {
+            "제작사",
+            "SBCamp",
+            "기획",
+            "서병찬",
+            "프로그래밍",
+            "서병찬",
+            "아트",
+            "여러 에셋 줍줍",
+             "사운드",
+            "손강사님",
+            "여러 에셋 줍줍",
+            "특별 감사 : 플레이어",
+            "여러분들께 감사드립니다."
+    };
+
+    public void StartEndingSequence()
+    {
+        changeMap = true; // 플레이어 움직임 방지
+        player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static; // 플레이어 정지
+        EnemyObjActiveSet(currentMapIndex, false); // 현재 맵 적 오브젝트들 Active False
+        SoundManager.Instance.StopBGM(0);
+        StartCoroutine(EndingSequence());
+    }
+
+    private IEnumerator EndingSequence()
+    {
+        endingCanvas.gameObject.SetActive(true);
+        UI.SetActive(false);
+
+        SoundManager.Instance.PlayBGM(BGMType.EndingCreditsBGM, 0.5f);
+
+        // 1. 초기 메시지 표시
+        yield return StartCoroutine(Typing(endingText, endingStory));
+        yield return new WaitForSeconds(2f);
+        StartCoroutine(Typing(endingText, ""));
+
+        // 2. 크레딧 롤 시작
+        StartCoroutine(PlayCredits());
+        yield return new WaitForSeconds(14f);
+
+        SoundManager.Instance.StopBGM(0);
+        SoundManager.Instance.PlaySFX(SFXType.GameClearSoundSFX);
+
+        yield return StartCoroutine(Typing(endingText, initialMessage));
+        yield return new WaitForSeconds(2f);
+
+        retryBtn.gameObject.SetActive(true);
+        quitBtn.gameObject.SetActive(true);
+    }
+
+    private IEnumerator PlayCredits()
+    {
+        float spacing = Screen.height * 0.2f;
+        float startY = -Screen.height * 0.5f;
+
+        foreach (string credit in credits)
+        {
+            // 크레딧 텍스트 생성
+            Text creditText = Instantiate(creditTextPrefab, creditContainer);
+            creditText.text = credit;
+
+            // 초기 위치 설정 (화면 아래 밖)
+            creditText.rectTransform.anchoredPosition = new Vector2(0, startY);
+            startY -= spacing;
+
+            // 크레딧 애니메이션 시작
+            StartCoroutine(AnimateCredit(creditText));
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+
+    private IEnumerator AnimateCredit(Text creditText)
+    {
+        float duration = 8f;
+        float elapsed = 0f;
+        RectTransform rect = creditText.rectTransform;
+        Color originalColor = creditText.color;
+        Vector3 vanishingPoint = vanishingPointPanel.transform.position;
+
+        while (elapsed < duration)
+        {
+            // 위치 이동 (위로 스크롤)
+            rect.anchoredPosition += Vector2.up * scrollSpeed * Time.deltaTime;
+
+            // 원근 효과 계산
+            float depth = Mathf.Abs(vanishingPoint.z - rect.position.z);
+            float scale = Mathf.Clamp(1 - (elapsed / duration) * perspectiveScale, 0.1f, 1f);
+            rect.localScale = Vector3.one * scale;
+
+            // 투명도 조절
+            float alpha = 1 - (elapsed / duration);
+            creditText.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
+
+            // 소실점 방향으로 이동
+            Vector3 screenPoint = Camera.main.WorldToViewportPoint(rect.position);
+            rect.position = Vector3.Lerp(rect.position, vanishingPoint, elapsed / duration * 0.01f);
+
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        Destroy(creditText.gameObject);
+    }
+
+
+    IEnumerator Typing(Text text, string content)
+    {
+        text.text = ""; // 현재 화면 메세지 비움
+
+        int typingCount = 0; // 타이핑 카운트 0 초기화
+        float elapsedTime = 0f;
+        float typingDelay = 0.1f;
+
+        // 텍스트 페이드 인
+        elapsedTime = 0f;
+        while (elapsedTime < fadeDuration)
+        {
+            float alpha = elapsedTime / fadeDuration;
+            Color textColor = text.color;
+            textColor.a = alpha;
+            text.color = textColor;
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // 텍스트를 완전히 불투명하게 설정
+        Color finalTextColor = endingText.color;
+        finalTextColor.a = 1;
+        endingText.color = finalTextColor;
+
+        // 현재 카운트가 컨텐츠의 길이와 다르다면 
+        while (typingCount != content.Length)
+        {
+            if (typingCount < content.Length)
+            {
+                text.text += content[typingCount].ToString();
+                // 현재 카운트에 해당하는 단어 하나를 메세지 텍스트 UI에 전달
+                SoundManager.Instance.PlaySFX(SFXType.TypingSFX);
+                typingCount++;
+                // 카운트를 1 증가
+            }
+            yield return new WaitForSeconds(typingDelay);
+            // 현재의 딜레이만큼 대기
+        }
+    }
+
+    public void RetryBtnClick()
+    {
+        SoundManager.Instance.PlaySFX(SFXType.MenuClickSFX);
+        Destroy(SceneManagerController.Instance);
+        SceneManager.LoadScene("Menu");
+    }
+
+    public void QuitBtnClick()
+    {
+        SoundManager.Instance.PlaySFX(SFXType.MenuClickSFX);
+        Application.Quit();
+    }
+
+    public void MenuSelectSFX()
+    {
+        SoundManager.Instance.PlaySFX(SFXType.MenuSelectSFX);
     }
 
     //public void AddCoin(int amount)

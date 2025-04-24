@@ -342,7 +342,9 @@ public class EnemyManager : MonoBehaviour
 
     private IEnumerator Patrol()
     {
-        animator.SetBool("IsWalk", true);
+        if (patrolPoints.Length > 0) animator.SetBool("IsWalk", true);
+        else animator.SetBool("IsWalk", false);
+
         //float patrolTimer = 0;
         //float patrolDuration = 5.0f; // 순찰 상태 지속 시간
         while (currentState == StateType.Patrol/* && patrolTimer < patrolDuration*/)
@@ -394,12 +396,14 @@ public class EnemyManager : MonoBehaviour
             {
                 yield return null;
             }
+
             float heightDiff = Mathf.Abs(player.position.y - transform.position.y);
             if (heightDiff > MAX_HEIGHT_DIFF)
             {
                 ChangeState(StateType.Patrol);
                 yield break;
             }
+
             if (distanceToPlayer < chaseRange)
             {
                 ChangeState(StateType.Chase);

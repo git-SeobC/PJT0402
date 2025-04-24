@@ -64,7 +64,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (isPaused || isKnockback) return;
+        if (isPaused || isKnockback || GameManager.Instance.changeMap) return;
 
         if (Input.GetButtonDown("Fire1") && !gameObject.GetComponent<PlayerMovement>().isFalling)
         {

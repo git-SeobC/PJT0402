@@ -9,7 +9,8 @@ public enum BGMType
     MenuBGM,
     Scene1StrangeFarmBGM,
     Scene2CaveBGM,
-    Scene2BGM
+    Scene2BGM,
+    EndingCreditsBGM
 }
 
 public enum SFXType
@@ -34,7 +35,8 @@ public enum SFXType
     GameOverSoundSFX,
     GameOverSound2SFX,
     LoadingStartSFX,
-    LoadingFinishSFX
+    LoadingFinishSFX,
+    TypingSFX
 }
 
 public class SoundManager : MonoBehaviour
