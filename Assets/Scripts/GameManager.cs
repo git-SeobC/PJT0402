@@ -34,10 +34,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Text endingText;
     [SerializeField] private Text creditTextPrefab;
     [SerializeField] private Transform creditContainer;
-    [SerializeField] private float scrollSpeed = 50f;
-    [SerializeField] private float fadeDuration = 2f;
-    [SerializeField] private float perspectiveScale = 0.9f;
-    [SerializeField] private Transform vanishingPointPanel;
+    [SerializeField] private float scrollSpeed = 50f; // 크레딧 스크롤 속도
+    [SerializeField] private float fadeDuration = 2f; // 페이드 아웃 시간
+    [SerializeField] private float perspectiveScale = 0.9f; // 원근감 강도
+    [SerializeField] private Transform vanishingPointPanel; // 소실점 위치(투명 판넬로 위치 설정)
 
     public Image endingPanel;
     public Button retryBtn;
@@ -327,7 +327,7 @@ public class GameManager : MonoBehaviour
             creditText.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
 
             // 소실점 방향으로 이동
-            Vector3 screenPoint = Camera.main.WorldToViewportPoint(rect.position);
+            Vector3 screenPoint = Camera.main.WorldToViewportPoint(rect.position); // 스크린 좌표로 변환 (사용 안함...)
             rect.position = Vector3.Lerp(rect.position, vanishingPoint, elapsed / duration * 0.01f);
 
             elapsed += Time.deltaTime;
