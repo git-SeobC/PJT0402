@@ -63,7 +63,7 @@ public class PlayerMovement : MonoBehaviour
         else if (isGrounded && isFalling) // 착지 상태
         {
             isFalling = false;
-            playerAnimation?.PlayerLanding();
+            playerAnimation.PlayerLanding();
         }
 
         //bool isAirborne = !isGrounded;

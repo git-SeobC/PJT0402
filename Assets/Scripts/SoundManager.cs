@@ -36,7 +36,8 @@ public enum SFXType
     GameOverSound2SFX,
     LoadingStartSFX,
     LoadingFinishSFX,
-    TypingSFX
+    TypingSFX,
+    IntoPortalSFX
 }
 
 public class SoundManager : MonoBehaviour

@@ -19,6 +19,7 @@ public class PlayerEvent : MonoBehaviour
         {
             if (isInPortal && Input.GetKeyDown(KeyCode.UpArrow))
             {
+                SoundManager.Instance.PlaySFX(SFXType.IntoPortalSFX);
                 isInputLocked = true;
                 isInPortal = false;
                 StartCoroutine(GameManager.Instance.SetPlayerStartPosition());
@@ -26,15 +27,17 @@ public class PlayerEvent : MonoBehaviour
             }
             else if (isEnding && Input.GetKeyDown(KeyCode.UpArrow))
             {
+                SoundManager.Instance.PlaySFX(SFXType.IntoPortalSFX);
                 isInputLocked = true;
                 isEnding = false;
                 GameManager.Instance.StartEndingSequence();
                 StartCoroutine(UnlockInputAfterDelay(3.0f));
             }
-            //else if (Input.GetKeyDown(KeyCode.E))
-            //{
-            //    GameManager.Instance.StartEndingSequence();
-            //}
+            else if (Input.GetKeyDown(KeyCode.E))
+            {
+                SoundManager.Instance.PlaySFX(SFXType.IntoPortalSFX);
+                GameManager.Instance.StartEndingSequence();
+            }
         }
     }
 

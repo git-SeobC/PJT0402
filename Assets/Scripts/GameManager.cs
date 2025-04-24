@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float perspectiveScale = 0.9f;
     [SerializeField] private Transform vanishingPointPanel;
 
+    public Image endingPanel;
     public Button retryBtn;
     public Button quitBtn;
 
@@ -121,7 +122,7 @@ public class GameManager : MonoBehaviour
         LoadingUI.SetActive(false);
         UI.SetActive(true);
         changeMap = false;
-        yield return StartCoroutine(FadeImage(1, 0, 1.0f));
+        yield return StartCoroutine(FadeImage(1, 0, 1.0f, basePanel));
     }
 
     private IEnumerator DelayedTeleport(int index)
@@ -147,7 +148,7 @@ public class GameManager : MonoBehaviour
         LoadingUI.SetActive(true);
         basePanel.gameObject.SetActive(true);
 
-        yield return StartCoroutine(FadeImage(0, 1, 1.0f));
+        yield return StartCoroutine(FadeImage(0, 1, 1.0f, basePanel));
 
         loadingDoor.gameObject.SetActive(true);
         loadingSlider.gameObject.SetActive(true);
@@ -186,24 +187,24 @@ public class GameManager : MonoBehaviour
         SoundManager.Instance.PlaySFX(SFXType.LoadingFinishSFX);
     }
 
-    IEnumerator FadeImage(float startAlpha, float endAlpha, float duration)
+    IEnumerator FadeImage(float startAlpha, float endAlpha, float duration, Image image)
     {
         float elapsedTime = 0f;
-        Color panelColor = basePanel.color;
+        Color panelColor = image.color;
         panelColor.a = startAlpha;
-        basePanel.color = panelColor;
+        image.color = panelColor;
 
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
             float newAlpha = Mathf.Lerp(startAlpha, endAlpha, elapsedTime / duration);
             panelColor.a = newAlpha;
-            basePanel.color = panelColor;
+            image.color = panelColor;
             yield return null;
         }
 
         panelColor.a = endAlpha;
-        basePanel.color = panelColor;
+        image.color = panelColor;
     }
 
     public void ResetGame()
@@ -214,6 +215,7 @@ public class GameManager : MonoBehaviour
     }
 
     string endingStory = "핀은 제이크를 찾기 위해 얼음대왕 성 침투에 성공하였지만...";
+    string toBeContinued = "다음 편에 계에속";
     string initialMessage = "Thank you for playing";
     string[] credits = {
             "제작사",
@@ -224,10 +226,10 @@ public class GameManager : MonoBehaviour
             "서병찬",
             "아트",
             "여러 에셋 줍줍",
-             "사운드",
+            "사운드",
             "손강사님",
             "여러 에셋 줍줍",
-            "특별 감사 : 플레이어",
+            "플레이어",
             "여러분들께 감사드립니다."
     };
 
@@ -246,9 +248,13 @@ public class GameManager : MonoBehaviour
         UI.SetActive(false);
 
         SoundManager.Instance.PlayBGM(BGMType.EndingCreditsBGM, 0.5f);
+        yield return StartCoroutine(FadeImage(0, 1, fadeDuration, endingPanel)); // 엔딩 패널 페이드 인
 
         // 1. 초기 메시지 표시
-        yield return StartCoroutine(Typing(endingText, endingStory));
+        yield return StartCoroutine(Typing(endingText, endingStory, 0.1f));
+        yield return new WaitForSeconds(2f);
+        StartCoroutine(Typing(endingText, ""));
+        yield return StartCoroutine(Typing(endingText, toBeContinued, 0.05f));
         yield return new WaitForSeconds(2f);
         StartCoroutine(Typing(endingText, ""));
 
@@ -257,13 +263,15 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(14f);
 
         SoundManager.Instance.StopBGM(0);
+        SoundManager.Instance.SetSFXVoluime(0.3f);
         SoundManager.Instance.PlaySFX(SFXType.GameClearSoundSFX);
 
         yield return StartCoroutine(Typing(endingText, initialMessage));
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(3.3f);
 
         retryBtn.gameObject.SetActive(true);
         quitBtn.gameObject.SetActive(true);
+        SoundManager.Instance.SetSFXVoluime(1f);
     }
 
     private IEnumerator PlayCredits()
@@ -321,13 +329,12 @@ public class GameManager : MonoBehaviour
     }
 
 
-    IEnumerator Typing(Text text, string content)
+    IEnumerator Typing(Text text, string content, float typingDelay = 0.1f)
     {
         text.text = ""; // 현재 화면 메세지 비움
 
         int typingCount = 0; // 타이핑 카운트 0 초기화
         float elapsedTime = 0f;
-        float typingDelay = 0.1f;
 
         // 텍스트 페이드 인
         elapsedTime = 0f;
