@@ -33,7 +33,7 @@ public class PlayerEvent : MonoBehaviour
                 GameManager.Instance.StartEndingSequence();
                 StartCoroutine(UnlockInputAfterDelay(3.0f));
             }
-            else if (Input.GetKeyDown(KeyCode.E))
+            else if (Input.GetKey(KeyCode.C) && Input.GetKeyDown(KeyCode.E))
             {
                 SoundManager.Instance.PlaySFX(SFXType.IntoPortalSFX);
                 GameManager.Instance.StartEndingSequence();
