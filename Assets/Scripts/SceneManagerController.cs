@@ -2,7 +2,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using NUnit.Framework.Internal.Commands;
 
 public class SceneManagerController : MonoBehaviour
 {

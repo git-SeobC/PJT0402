@@ -124,8 +124,9 @@ public class GameManager : MonoBehaviour
         basePanel.gameObject.SetActive(false);
         LoadingUI.SetActive(false);
         UI.SetActive(true);
-        changeMap = false;
+
         yield return StartCoroutine(FadeImage(1, 0, 1.0f, basePanel));
+        changeMap = false;
     }
 
     private IEnumerator DelayedTeleport(int index)

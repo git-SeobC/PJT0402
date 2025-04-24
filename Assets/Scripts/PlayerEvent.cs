@@ -22,6 +22,10 @@ public class PlayerEvent : MonoBehaviour
                 SoundManager.Instance.PlaySFX(SFXType.IntoPortalSFX);
                 isInputLocked = true;
                 isInPortal = false;
+                var rb = GetComponent<Rigidbody2D>();
+                if (rb != null) rb.linearVelocity = Vector2.zero;
+                PlayerController.Instance.animator.SetBool("IsWalking", false);
+                PlayerController.Instance.animator.Play("Pin_Idle");
                 StartCoroutine(GameManager.Instance.SetPlayerStartPosition());
                 StartCoroutine(UnlockInputAfterDelay(3.0f));
             }
@@ -90,7 +94,6 @@ public class PlayerEvent : MonoBehaviour
         {
             AttackKeyObj.SetActive(false);
         }
-        // activeInHierarchy 부모 오브젝트가 Off되어있으면 false임 -> 실질적으로 On이 가능한 상태인지 확인하는 용도
         else if (collision.name == "Portal" && collision.gameObject.activeInHierarchy)
         {
             UpKeyObj.SetActive(false);
@@ -101,17 +104,4 @@ public class PlayerEvent : MonoBehaviour
             isEnding = false;
         }
     }
-
-    //private void OnTriggerStay2D(Collider2D collision)
-    //{
-    //    Debug.Log($"{collision.CompareTag("Portal")}");
-    //    if (collision.CompareTag("Portal"))
-    //    {
-    //        if (Input.GetKeyDown(KeyCode.UpArrow))
-    //        {
-    //            //SceneManagerController.Instance.LoadNextScene();
-    //            GameManager.Instance.SetPlayerStartPosition(2);
-    //        }
-    //    }
-    //}
 }

@@ -1,6 +1,4 @@
-using NUnit.Framework.Internal.Commands;
 using System.Collections;
-using Unity.AppUI.Core;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -21,7 +19,7 @@ public class PlayerController : MonoBehaviour
 
     private CapsuleCollider2D cld;
     private SpriteRenderer spriteRenderer;
-    private Animator animator;
+    public Animator animator;
     private bool isInvincible = false;
     public float invincibilityDuration = 1.0f;
     public float knockbackForce = 5.0f;
