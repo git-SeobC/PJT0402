@@ -88,6 +88,8 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator SetPlayerStartPosition()
     {
+        SceneManagerController.Instance.savePointMapindex = currentMapIndex;
+
         changeMap = true;
         SoundManager.Instance.StopBGM(0f);
 
@@ -97,6 +99,7 @@ public class GameManager : MonoBehaviour
         yield return StartCoroutine(LoadingStart());
 
         currentMapIndex++;
+        SceneManagerController.Instance.savePointMapindex = currentMapIndex;
 
         if (enemyGroup[currentMapIndex] != null)
         {
@@ -209,7 +212,12 @@ public class GameManager : MonoBehaviour
 
     public void ResetGame()
     {
-        currentMapIndex = 1;
+        //if (currentMapIndex == 2)
+        //{
+        //    currentMapIndex = 1;
+        //    StartCoroutine(SetPlayerStartPosition());
+        //}
+        //else currentMapIndex = 1;
         playerController.playerHP = 3;
         SetLifeUI();
     }

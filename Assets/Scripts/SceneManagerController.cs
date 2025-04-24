@@ -17,6 +17,7 @@ public class SceneManagerController : MonoBehaviour
     public float fadeDuration = 1.0f;
     public string nextSceneName;
     private bool isFading = false;
+    public int savePointMapindex = 0;
 
     private void Awake()
     {

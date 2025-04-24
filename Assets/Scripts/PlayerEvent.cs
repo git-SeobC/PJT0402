@@ -52,6 +52,10 @@ public class PlayerEvent : MonoBehaviour
         if (collision.name == "TutorialEvent1")
         {
             ArrowKeyObj.SetActive(true);
+            if (SceneManagerController.Instance.savePointMapindex == 2)
+            {
+                StartCoroutine(GameManager.Instance.SetPlayerStartPosition());
+            }
         }
         else if (collision.name == "TutorialEvent2")
         {
