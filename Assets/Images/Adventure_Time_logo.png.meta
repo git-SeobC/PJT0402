@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Adventure_Time_logo_0: 6874265727807860501
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
